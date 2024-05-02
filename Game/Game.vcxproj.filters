@@ -20,6 +20,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="GenericFiles\ContentManagers">
+      <UniqueIdentifier>{37e2870a-2357-470b-b934-4725790e7e31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -82,6 +85,9 @@
     <ClInclude Include="TitleScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="ContentManager.h">
+      <Filter>GenericFiles\ContentManagers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Publisher.cpp">
@@ -122,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>GenericFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentManager.cpp">
+      <Filter>GenericFiles\ContentManagers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
