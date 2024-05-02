@@ -1,0 +1,6 @@
+.vs/
+extern/
+release/
+*/debug/*
+*/x64/*
+*/x86/*
