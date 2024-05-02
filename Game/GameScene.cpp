@@ -3,8 +3,10 @@
 
 #include "game.h"
 
+const unsigned int GameScene::BACKGROUND_SPEED = 10;
+
 GameScene::GameScene()
-    : Scene(SceneType::GAME_SCENE)
+    : Scene(SceneType::GAME_SCENE), background(sf::Sprite()), backgroundPosition(0)
 {
 
 }
@@ -13,23 +15,38 @@ GameScene::~GameScene()
 {
 
 }
+
+
 SceneType GameScene::update()
 {
+    backgroundPosition += BACKGROUND_SPEED;
+    background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
+
     return getSceneType();
 }
 
 void GameScene::draw(sf::RenderWindow& window) const
 {
-    window.draw(menuImage);
+    window.draw(background);
 }
 
 bool GameScene::init()
 {
-    if (!menuImageTexture.loadFromFile("Assets\\Sprites\\Title\\Title.png"))
+    // Chargement des ressources
+    if (contentManager.loadContent() == false)
+    {
         return false;
-    menuImage.setTexture(menuImageTexture);
-    menuImage.setOrigin(menuImage.getTexture()->getSize().x / 2.0f, menuImage.getTexture()->getSize().y / 2.0f);
-    menuImage.setPosition(Game::GAME_WIDTH / 2.0f, Game::GAME_HEIGHT / 2.0f);
+    }
+
+    if (!gameMusic.openFromFile("Assets\\Music\\Title\\SkyFire (Title Screen).ogg"))
+    {
+        return false;
+    }
+
+    // Arrière-plan
+    background.setTexture(contentManager.getBackgroundTexture());
+    gameMusic.setLoop(true);
+    gameMusic.play();
 
     return true;
 }

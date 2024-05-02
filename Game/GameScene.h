@@ -5,6 +5,8 @@ class GameScene :
     public Scene
 {
 public:
+    static const unsigned int BACKGROUND_SPEED;
+
     // Héritées via Scene
     GameScene();
     ~GameScene();
@@ -14,6 +16,8 @@ public:
     virtual bool uninit() override;
     virtual bool handleEvents(sf::RenderWindow& window) override;
 private:
-    sf::Texture menuImageTexture;
-    sf::Sprite menuImage;
+    ContentManager contentManager;
+    sf::Sprite background;
+    sf::Music gameMusic;
+    int backgroundPosition;
 };
