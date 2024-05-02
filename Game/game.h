@@ -8,7 +8,7 @@ class TitleScene;
 class Scene;
 class Game
 {
- typedef GameScene InitialScene;
+ typedef TitleScene InitialScene;
 public:
   static const unsigned int FRAME_RATE;
   static const unsigned int GAME_WIDTH;
