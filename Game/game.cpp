@@ -3,6 +3,9 @@
 #include "ContentManager.h"
 #include "TitleScene.h"
 #include "scenetype.h"
+#include "GameScene.h"
+
+
 
 const unsigned int Game::FRAME_RATE = 60;
 const unsigned int Game::GAME_WIDTH = 720;

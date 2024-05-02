@@ -20,8 +20,13 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="GenericFiles\ContentManagers">
       <UniqueIdentifier>{37e2870a-2357-470b-b934-4725790e7e31}</UniqueIdentifier>
+=======
+    <Filter Include="ContentManager">
+      <UniqueIdentifier>{bad3b0d7-ffae-4f72-ae3a-3a2eda46502f}</UniqueIdentifier>
+>>>>>>> gameScene
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,8 +90,22 @@
     <ClInclude Include="TitleScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ContentManager.h">
       <Filter>GenericFiles\ContentManagers</Filter>
+=======
+    <ClInclude Include="GameScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentManager.h">
+      <Filter>ContentManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LeaderboardContentManager.h">
+      <Filter>ContentManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContentManager.h">
+      <Filter>ContentManager</Filter>
+>>>>>>> gameScene
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -129,8 +148,22 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>GenericFiles</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ContentManager.cpp">
       <Filter>GenericFiles\ContentManagers</Filter>
+=======
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentManager.cpp">
+      <Filter>ContentManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LeaderboardContentManager.cpp">
+      <Filter>ContentManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameContentManager.cpp">
+      <Filter>ContentManager</Filter>
+>>>>>>> gameScene
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

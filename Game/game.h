@@ -3,12 +3,12 @@
 #include "Inputs.h"
 #include "scenetype.h"
 
-
+class GameScene;
 class TitleScene;
 class Scene;
 class Game
 {
- typedef TitleScene InitialScene;
+ typedef GameScene InitialScene;
 public:
   static const unsigned int FRAME_RATE;
   static const unsigned int GAME_WIDTH;
