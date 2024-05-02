@@ -21,4 +21,6 @@ void Inputs::reset()
 {
 	moveFactorX=moveFactorY=0.0f;
 	fireBullet = false;
+	startGameSwitch = false;
+	leaveGameSwitch = false;
 }

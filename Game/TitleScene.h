@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "ContentManager.h"
+#include "Inputs.h"
 class TitleScene :
     public Scene
 {
@@ -13,10 +14,23 @@ public:
   virtual bool init() override;
   virtual bool uninit() override;
   virtual bool handleEvents(sf::RenderWindow& window) override;
+
+  virtual void pause() override;
+  virtual void unPause() override;
 private:
 
   
   sf::Texture menuImageTexture;
   sf::Sprite menuImage;
+
+  sf::Text startGameText;
+  sf::Text quitGameText;
+
+  Inputs inputs;
+
+  sf::Music titleMusic;
+
+  ContentManager contentManager;  
+
 };
 
