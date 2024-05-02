@@ -1,6 +1,7 @@
 .vs/
 extern/
 release/
-*/debug/*
+Debug/
+*/Debug/*
 */x64/*
 */x86/*
