@@ -47,7 +47,7 @@ bool TitleScene::init()
   if(contentManager.loadContent() == false)
     return false;
 
-  if(!titleMusic.openFromFile("Assets\\Music\\Title\\SkyFire.ogg"))
+  if(!titleMusic.openFromFile("Assets\\Music\\Title\\SkyFire (Main menu).ogg"))
     return false;
   titleMusic.setLoop(true);
   titleMusic.play();
