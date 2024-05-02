@@ -14,6 +14,8 @@ public:
   virtual bool uninit() override;
   virtual bool handleEvents(sf::RenderWindow& window) override;
 private:
+
+  
   sf::Texture menuImageTexture;
   sf::Sprite menuImage;
 };
