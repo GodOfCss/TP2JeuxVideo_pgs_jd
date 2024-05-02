@@ -30,5 +30,9 @@ private:
 	sf::SoundBuffer enemyKilledSoundBuffer;
 };
 
+class ContentManager
+{
+};
+
 
 
