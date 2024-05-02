@@ -17,7 +17,11 @@ public:
     virtual bool handleEvents(sf::RenderWindow& window) override;
 private:
     ContentManager contentManager;
+
+    sf::Text scoreText;
     sf::Sprite background;
     sf::Music gameMusic;
+
+
     int backgroundPosition;
 };
