@@ -22,7 +22,7 @@ SceneType TitleScene::update()
     return SceneType::GAME_SCENE;
   }
   
-  return getSceneType();
+  return retval;
 }
 
 void TitleScene::draw(sf::RenderWindow& window) const
@@ -97,10 +97,14 @@ bool TitleScene::handleEvents(sf::RenderWindow& window)
         window.close();
         retval = true;
       }
-      else
+      else if(event.key.code == sf::Keyboard::Space)
       {
         inputs.startGameSwitch = true;
       }
+    }
+    else if (event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::KeyPressed)
+    {
+      inputs.startGameSwitch = true;
     }
   }
   return retval;

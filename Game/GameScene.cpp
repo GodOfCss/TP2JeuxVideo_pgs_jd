@@ -38,7 +38,7 @@ bool GameScene::init()
         return false;
     }
 
-    if (!gameMusic.openFromFile("Assets\\Music\\Title\\SkyFire (Title Screen).ogg"))
+    if (!gameMusic.openFromFile("Assets\\Music\\Game\\NiceTryStarFox.ogg"))
     {
         return false;
     }

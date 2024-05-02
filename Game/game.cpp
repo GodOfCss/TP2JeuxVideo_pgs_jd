@@ -143,12 +143,21 @@ Scene* Game::getNextScene(SceneType type) const
   Scene* scene =nullptr;
   switch (type)
   {
-
-  default:
-  {
-    scene = nullptr;
-    break;
-  }
+    case SceneType::TITLE_SCENE:
+    {
+      scene = new TitleScene();
+      break;
+    }
+    case SceneType::GAME_SCENE:
+    {
+      scene = new GameScene();
+      break;
+    }
+    default:
+    {
+      scene = nullptr;
+      break;
+    }
   }
   return scene;
 }
