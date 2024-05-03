@@ -5,6 +5,7 @@
 
 class GameScene;
 class TitleScene;
+class LeaderboardScene;
 class Scene;
 class Game
 {

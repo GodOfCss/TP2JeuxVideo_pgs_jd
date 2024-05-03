@@ -6,7 +6,10 @@
 const unsigned int GameScene::BACKGROUND_SPEED = 10;
 
 GameScene::GameScene()
-    : Scene(SceneType::GAME_SCENE), background(sf::Sprite()), backgroundPosition(0)
+    : Scene(SceneType::GAME_SCENE)
+    , background(sf::Sprite())
+    , backgroundPosition(0)
+    , hasStarted(false)
 {
 
 }
@@ -19,15 +22,38 @@ GameScene::~GameScene()
 
 SceneType GameScene::update()
 {
+    SceneType retval = getSceneType();
+
+    if (hasStarted) {
+      retval = SceneType::NONE;
+      return retval;
+    }
+    
+    if (inputs.goToLeaderboardSwitch) {
+      hasStarted = true;
+      retval = SceneType::LEADERBOARD_SCENE;
+      return retval;
+    }
+
     backgroundPosition += BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
 
-    return getSceneType();
+    return retval;
 }
 
 void GameScene::draw(sf::RenderWindow& window) const
 {
     window.draw(background);
+}
+
+void GameScene::pause()
+{
+  gameMusic.pause();
+}
+
+void GameScene::unPause()
+{
+  gameMusic.play();
 }
 
 bool GameScene::init()
@@ -60,6 +86,7 @@ bool GameScene::handleEvents(sf::RenderWindow& window)
 {
     bool retval = false;
     sf::Event event;
+    inputs.reset();
     while (window.pollEvent(event))
     {
         //x sur la fenêtre
@@ -67,6 +94,10 @@ bool GameScene::handleEvents(sf::RenderWindow& window)
         {
             window.close();
             retval = true;
+        }
+        if (event.key.code == sf::Keyboard::BackSpace) //Pour test leaderboard, a modif
+        {
+          inputs.goToLeaderboardSwitch = true;
         }
     }
     return retval;

@@ -15,5 +15,8 @@ struct Inputs
 	bool startGameSwitch;
 	bool leaveGameSwitch;
 
+	bool goToLeaderboardSwitch;
+	bool returnToMainMenuSwitch;
+
 };
 

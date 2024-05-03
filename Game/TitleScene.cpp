@@ -82,6 +82,7 @@ bool TitleScene::handleEvents(sf::RenderWindow& window)
 {
   bool retval = false;
   sf::Event event;
+  inputs.reset();
   while (window.pollEvent(event))
   {
     //x sur la fenêtre
@@ -97,14 +98,12 @@ bool TitleScene::handleEvents(sf::RenderWindow& window)
         window.close();
         retval = true;
       }
-      else if(event.key.code == sf::Keyboard::Space)
+      else if(event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::KeyPressed)
       {
-        inputs.startGameSwitch = true;
+        if (event.key.code != sf::Keyboard::Escape) {
+          inputs.startGameSwitch = true;
+        }
       }
-    }
-    else if (event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::KeyPressed)
-    {
-      inputs.startGameSwitch = true;
     }
   }
   return retval;
