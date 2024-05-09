@@ -7,12 +7,10 @@
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="CyclicAnimation.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="GameContentManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="InputBasedAnimation.cpp" />
     <ClCompile Include="Inputs.cpp" />
-    <ClCompile Include="LeaderboardContentManager.cpp" />
     <ClCompile Include="LinearAnimation.cpp" />
     <ClCompile Include="Publisher.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -29,12 +27,10 @@
     <ClInclude Include="CyclicAnimation.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="GameContentManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="InputBasedAnimation.h" />
     <ClInclude Include="Inputs.h" />
-    <ClInclude Include="LeaderboardContentManager.h" />
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="LinearAnimation.h" />
     <ClInclude Include="AnimationState.h" />
@@ -46,6 +42,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="LeaderboardScene.h" />
+    <ClInclude Include="PlayerStats.h" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\extern\SFML\bin\openal32.dll" />
