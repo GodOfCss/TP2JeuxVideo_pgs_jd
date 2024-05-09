@@ -14,6 +14,7 @@ TitleScene::~TitleScene()
 {
 
 }
+
 SceneType TitleScene::update()
 {
   SceneType retval = getSceneType();

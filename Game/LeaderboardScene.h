@@ -21,11 +21,11 @@ class LeaderboardScene :
 
   private:
 
-    sf::Texture menuImageTexture;
-    sf::Sprite menuImage;
+    //sf::Texture menuImageTexture;
+    //sf::Sprite menuImage;
 
     sf::Text leaderboardText;
-    sf::Text quitGameText;
+    //sf::Text quitGameText;
 
     Inputs inputs;
 

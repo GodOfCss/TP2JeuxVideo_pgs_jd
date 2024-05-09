@@ -2,6 +2,7 @@
 #include "LeaderboardScene.h"
 #include <iostream>
 #include <fstream>
+#include "game.h"
 
 LeaderboardScene::LeaderboardScene()
   : Scene(SceneType::LEADERBOARD_SCENE)
@@ -9,7 +10,10 @@ LeaderboardScene::LeaderboardScene()
   fillWithRandomStats(outStats);
   for (int i = 0; i < NB_STATS; i++)
   {
-    std::cout << inStats[i].name << " " << inStats[i].score << std::endl;
+    inStats[i].score = 0;
+    inStats[i].name[0] = '\0';
+    outStats[i].score = 0;
+    outStats[i].name[0] = '\0';
   }
 }
 
@@ -19,52 +23,81 @@ LeaderboardScene::~LeaderboardScene()
 
 SceneType LeaderboardScene::update()
 {
-  return SceneType();
+  SceneType retval = getSceneType();
+
+  if (inputs.returnToMainMenuSwitch) {
+    return SceneType::NONE;
+  }
+
+  return retval;
 }
 
 
+void LeaderboardScene::draw(sf::RenderWindow& window) const
+{
+  window.draw(leaderboardText);
+}
 
+void LeaderboardScene::pause()
+{
+  leaderboardMusic.pause();
+}
 
+void LeaderboardScene::unPause()
+{
+  leaderboardMusic.play();
+}
 
+bool LeaderboardScene::init()
+{
+  if (contentManager.loadContent() == false)
+    return false;
 
+  if (!leaderboardMusic.openFromFile("Assets\\Music\\Leaderboard\\Leaderboard theme.ogg"))
+    return false;
+  leaderboardMusic.setLoop(true);
+  leaderboardMusic.play();
 
+  const std::string leaderBoardEndText = "Leaderboard text";
+  leaderboardText.setFont(contentManager.getMainFont());
+  leaderboardText.setCharacterSize(15);
+  leaderboardText.setString(leaderBoardEndText);
+  leaderboardText.setPosition(Game::GAME_WIDTH / 2 - leaderboardText.getLocalBounds().width / 2, Game::GAME_HEIGHT / 2);
 
+  return true;
+}
 
+bool LeaderboardScene::uninit()
+{
+  return true;
+}
 
+bool LeaderboardScene::handleEvents(sf::RenderWindow& window)
+{
+  bool retval = false;
+  sf::Event event;
+  inputs.reset();
+  while (window.pollEvent(event))
+  {
+    //x sur la fenêtre
+    if (event.type == sf::Event::Closed)
+    {
+      window.close();
+      retval = true;
+    }
+    else if (event.type == sf::Event::KeyPressed)
+    {
+      if (event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::KeyPressed)
+      {
+        if (event.key.code == sf::Keyboard::Escape) {
+          inputs.returnToMainMenuSwitch = true;
+        }
+      }
+    }
+  }
+  return retval;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 void LeaderboardScene::fillWithRandomStats(PlayerStats stats[NB_STATS])
 {
