@@ -3,6 +3,9 @@
 #include "ContentManager.h"
 #include "Inputs.h"
 #include "PlayerStats.h"
+#include <array>
+
+
 #define NB_STATS 10
 class LeaderboardScene : 
   public Scene
@@ -21,22 +24,29 @@ class LeaderboardScene :
 
   private:
 
-    //sf::Texture menuImageTexture;
-    //sf::Sprite menuImage;
-
-    sf::Text leaderboardText;
-    //sf::Text quitGameText;
-
-    Inputs inputs;
-
-    sf::Music leaderboardMusic;
-
-    PlayerStats outStats[NB_STATS];
-    PlayerStats inStats[NB_STATS];
-
-    ContentManager contentManager;
     void fillWithRandomStats(PlayerStats stats[NB_STATS]);
     bool writeToFile(const std::string& path, const PlayerStats stats[NB_STATS]);
     bool readFromFile(const std::string& path, PlayerStats stats[NB_STATS]);
+    void writeScore(PlayerStats stats[NB_STATS], int score, const std::string& playerName);
+    void updateTemporaryScore();
+
+    std::string tableSort(PlayerStats stats[NB_STATS]);
+
+    sf::Text leaderboardText;
+    sf::Text scoreLeaderboardText;
+    sf::Text returnToMainMenuText;
+    sf::Text playerName;
+    sf::Music leaderboardMusic;
+
+    Inputs inputs;
+
+    ContentManager contentManager;
+    PlayerStats outStats[NB_STATS];
+    PlayerStats inStats[NB_STATS];
+
+    int finalScore;
+    bool nameEntered;
+    std::string name;
+
 };
 
