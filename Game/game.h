@@ -33,5 +33,6 @@ private:
   bool popScene(bool initScene = true);
   bool pushScene(Scene* newScene);
   std::stack<Scene*> scenes;
+  
 };
 

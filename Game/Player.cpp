@@ -8,8 +8,10 @@
 
 const float Player::PLAYER_SPEED = 300.0f;
 const float Player::BORDER_THICKNESS = 30;
+const float Player::MAX_INVINCIBLE = 3;
 
-Player::Player()
+Player::Player() :
+	invincible(0)
 {
 
 }
@@ -28,6 +30,17 @@ bool Player::init(const ContentManager& contentManager)
 
 bool Player::update(float deltaT, const Inputs& inputs)
 {
+	if (invincible > 0) 
+	{
+		invincible-= deltaT;
+		setColor(sf::Color(getColor().r, getColor().g, getColor().b, 150));
+	}
+	else 
+	{
+		invincible = 0;
+		setColor(sf::Color(getColor().r, getColor().g, getColor().b, 255));
+	}
+
 	sf::Vector2f playerMovement = normalizeMovement(sf::Vector2f(-inputs.moveFactorX, -inputs.moveFactorY));
 	move(playerMovement * deltaT * PLAYER_SPEED);
 	
@@ -61,4 +74,12 @@ sf::Vector2f Player::normalizeMovement(const sf::Vector2f& playerMovement)
 		return sf::Vector2f(playerMovement.x / vectorLength, playerMovement.y / vectorLength);
 	else
 		return playerMovement;
+}
+
+void Player::isHit()
+{
+	if (!invincible <= 0)
+	{
+		invincible = MAX_INVINCIBLE;
+	}
 }

@@ -103,6 +103,18 @@
     <ClInclude Include="ShipAnimation.h">
       <Filter>Animations</Filter>
     </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBullet.h">
+      <Filter>Characters</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAnimation.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Publisher.cpp">
@@ -160,6 +172,18 @@
       <Filter>Characters</Filter>
     </ClCompile>
     <ClCompile Include="ShipAnimation.cpp">
+      <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBullet.cpp">
+      <Filter>Characters</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAnimation.cpp">
       <Filter>Animations</Filter>
     </ClCompile>
   </ItemGroup>

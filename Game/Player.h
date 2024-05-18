@@ -6,6 +6,7 @@ class Player :
 {
     static const float PLAYER_SPEED;
     static const float BORDER_THICKNESS;
+    static const float MAX_INVINCIBLE;
 
 public:
     Player();
@@ -13,4 +14,7 @@ public:
 
     bool update(float deltaT, const Inputs& inputs) override;
     sf::Vector2f normalizeMovement(const sf::Vector2f& playerMovement);
+    void isHit();
+
+    float invincible;
 };
