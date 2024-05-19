@@ -102,6 +102,7 @@ SceneType GameScene::update()
     {
        fireBullet();
     }
+
     if (spawnCooldown > 0) 
     {
         spawnCooldown -= 1.0f / (float)Game::FRAME_RATE;
@@ -155,12 +156,11 @@ SceneType GameScene::update()
                     retval = SceneType::TITLE_SCENE;
                     return retval;
                 }
-                std::cout << lives;
             }
         }
 
         e.update(1.0f / (float)Game::FRAME_RATE, inputs);
-   }
+     }
 
   for (Bullet& b : bullets)
   {
@@ -202,54 +202,8 @@ SceneType GameScene::update()
                     }
                 }
             }
-
-
-            //for (EnemyBullet& enemyBullet : e.getBullets())
-            //{
-            //    if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
-            //    {
-            //        player.isHit();
-            //        if (player.bonusCount > 0)
-            //        {
-            //          player.bonusCount--;
-            //        }
-            //        else
-            //        {
-            //          lives--;
-            //          if (lives == 0) {
-            //            hasStarted = true;
-            //            retval = SceneType::LEADERBOARD_SCENE;
-            //          }
-            //        }
-            //    }
-            //}
-
-            //e.update(1.0f / (float)Game::FRAME_RATE, inputs);
-            //
-            ////Bullets colliding with enemies + score
-            //if (b.collidesWith(e))
-            //{
-            //  b.deactivate();
-            //  e.damage();
-            //  if (e.getHealth() == 0) {
-            //    score += e.dies();
-            //    enemyTotal--;
-
-            //    double bonusNumber = bonusRate.nextDouble();
-
-            //    if (bonusNumber > BONUS_PCT) {
-            //      spawnBonus(e.getPosition());
-            //    }
-            //  }
-            //}
-        
-
-          if (enemyTotal == 0 && spawnBoss == false)
-          {
-              boss.spawn();
-              spawnBoss = true;
-          }
         }
+  }
 
       for (GunBonus& b : gunBonuses)
       {
@@ -304,19 +258,14 @@ SceneType GameScene::update()
       }
   
     return getSceneType();
-  }
 }
-
 
 void GameScene::fireBullet()
 {
-  if (recoil == 0)
-  {
     Bullet& b = getAvailableBullet();
     b.setPosition(player.getPosition());
     inputs.fireBullet = false;
     recoil = MAX_RECOIL;
-  }
 }
 
 void GameScene::draw(sf::RenderWindow& window) const
@@ -490,10 +439,6 @@ bool GameScene::handleEvents(sf::RenderWindow& window)
         {
             window.close();
             retval = true;
-        }
-        if (event.key.code == sf::Keyboard::BackSpace) //Pour test leaderboard, a modif
-        {
-          inputs.goToLeaderboardSwitch = true;
         }
     }
 
