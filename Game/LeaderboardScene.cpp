@@ -6,7 +6,7 @@
 
 LeaderboardScene::LeaderboardScene()
   : Scene(SceneType::LEADERBOARD_SCENE)
-  , finalScore(1400504)
+  , finalScore(1400508)
   , nameEntered(false)
   , name("")
 
@@ -32,6 +32,7 @@ SceneType LeaderboardScene::update()
 
 std::string LeaderboardScene::tableSort(PlayerStats stats[NB_STATS]) {
   std::string table = "Name\tScore\n\n";
+  char buffer[32];
 
   std::sort(stats, stats + NB_STATS, [](const PlayerStats& a, const PlayerStats& b) {
     return a.score > b.score;
@@ -39,10 +40,12 @@ std::string LeaderboardScene::tableSort(PlayerStats stats[NB_STATS]) {
 
   for (int i = 0; i < NB_STATS; i++) {
     if (stats[i].score != 0) {
-      table += stats[i].name;
-      table += "\t";
-      table += std::to_string(stats[i].score);
-      table += "\n";
+      snprintf(buffer, sizeof(buffer), "%-3s\t%07d\n", stats[i].name, stats[i].score);
+      table += buffer;
+      //table += stats[i].name;
+      //table += "\t";
+      //table += std::to_string(stats[i].score);
+      //table += "\n";
     }
   }
 
@@ -130,7 +133,7 @@ bool LeaderboardScene::handleEvents(sf::RenderWindow& window) {
   inputs.reset();
 
   while (window.pollEvent(event)) {
- 
+    
     if (event.type == sf::Event::Closed) {
       window.close();
       retval = true;

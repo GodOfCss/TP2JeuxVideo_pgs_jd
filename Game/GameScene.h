@@ -1,9 +1,6 @@
 #pragma once
 #include "Scene.h"
 #include "ContentManager.h"
-<<<<<<< HEAD
-#include "Inputs.h"
-=======
 #include "Player.h"
 #include "Inputs.h"
 #include "Bullet.h"
@@ -11,7 +8,6 @@
 #include "GunBonus.h"
 #include "random.h"
 #include "HealthBonus.h"
->>>>>>> bonus
 class GameScene :
     public Scene
 {
@@ -26,7 +22,7 @@ public:
     static const double BONUS_PCT;
     static const double BONUS_50;
 
-    // Héritées via Scene
+    // Hï¿½ritï¿½es via Scene
     GameScene();
     ~GameScene();
     virtual SceneType update() override;
@@ -35,11 +31,9 @@ public:
     virtual bool init() override;
     virtual bool uninit() override;
     virtual bool handleEvents(sf::RenderWindow& window) override;
-<<<<<<< HEAD
 
     virtual void pause() override;
     virtual void unPause() override;
-=======
     void spawnBonus(sf::Vector2f enemyPosition);
 
     Bullet& getAvailableBullet();
@@ -47,7 +41,6 @@ public:
     HealthBonus& getAvailableHealthBonus();
 
     bool isEnemyAvailable(Enemy& e);
->>>>>>> bonus
 private:
     ContentManager contentManager;
 
@@ -55,10 +48,7 @@ private:
     sf::Music gameMusic;
     int backgroundPosition;
 
-<<<<<<< HEAD
     bool hasStarted;
-    Inputs inputs;
-=======
     sf::Text scoreText;
     std::vector<sf::Sprite> livesRender;
     int lives;
@@ -79,5 +69,4 @@ private:
     Random bonusRate;
     Random bonusType;
 
->>>>>>> bonus
 };

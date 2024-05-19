@@ -159,6 +159,7 @@
     <ClInclude Include="AnimatedGameObject.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationFrame.h" />
+    <ClInclude Include="Bonus.h" />
     <ClInclude Include="GunBonus.h" />
     <ClInclude Include="GunBonusAnimation.h" />
     <ClInclude Include="Bullet.h" />
@@ -174,14 +175,11 @@
     <ClInclude Include="HealthBonus.h" />
     <ClInclude Include="InputBasedAnimation.h" />
     <ClInclude Include="Inputs.h" />
-<<<<<<< HEAD
     <ClInclude Include="LeaderboardScene.h" />
     <ClInclude Include="PlayerStats.h" />
-=======
     <ClInclude Include="LeaderboardContentManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="random.h" />
->>>>>>> bonus
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="LinearAnimation.h" />
     <ClInclude Include="AnimationState.h" />
@@ -198,6 +196,7 @@
     <ClCompile Include="AnimatedGameObject.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationFrame.cpp" />
+    <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="GunBonus.cpp" />
     <ClCompile Include="GunBonusAnimation.cpp" />
     <ClCompile Include="Bullet.cpp" />
@@ -215,6 +214,7 @@
     <ClCompile Include="LeaderboardScene.cpp" />
     <ClCompile Include="LinearAnimation.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerStats.cpp" />
     <ClCompile Include="Publisher.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="Scene.cpp" />
