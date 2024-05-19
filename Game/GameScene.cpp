@@ -59,6 +59,7 @@ SceneType GameScene::update()
     backgroundPosition -= BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
     scoreText.setString("Score: " + std::to_string(score));
+    bonusText.setString("Bonus: " + std::to_string(player.bonusCount));
 
     player.update(TIME_PER_FRAME, inputs);
     boss.update(TIME_PER_FRAME, inputs, player.getPosition().x);
@@ -155,7 +156,6 @@ SceneType GameScene::update()
         {
             boss.spawn();
             spawnBoss = true;
-            std::cout << "Boss spawned" << std::endl;
         }
     }
 
@@ -199,8 +199,6 @@ SceneType GameScene::update()
       }
     }
   
-    //std::cout << 'X: ' << std::to_string(inputs.moveFactorX);
-    //std::cout << 'Y: ' << std::to_string(inputs.moveFactorY);
     return getSceneType();
 }
 
@@ -220,6 +218,7 @@ void GameScene::draw(sf::RenderWindow& window) const
 {
     window.draw(background);
     window.draw(scoreText);
+    window.draw(bonusText);
 
     for (int i = 0; i < lives; i++)
     {
@@ -299,6 +298,14 @@ bool GameScene::init()
     scoreText.setOutlineColor(sf::Color::White);
     scoreText.setString("Score : 0");
     scoreText.setPosition(10, HUD_HEIGHT);
+
+    bonusText.setFont(contentManager.getMainFont());
+    bonusText.setCharacterSize(20);
+    bonusText.setFillColor(sf::Color::Cyan);
+    bonusText.setOutlineThickness(4);
+    bonusText.setOutlineColor(sf::Color::White);
+    bonusText.setString("Bonus : 0");
+    bonusText.setPosition(Game::GAME_WIDTH - 230, 30);
 
     //Lives
     for (int i = 0; i < AMOUNT_OF_LIVES; i++)

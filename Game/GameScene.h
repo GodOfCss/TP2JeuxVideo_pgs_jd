@@ -55,6 +55,7 @@ private:
 
     bool hasStarted;
     sf::Text scoreText;
+    sf::Text bonusText;
     std::vector<sf::Sprite> livesRender;
     int lives;
     int score;
