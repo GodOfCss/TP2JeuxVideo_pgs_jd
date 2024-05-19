@@ -43,10 +43,6 @@ std::string LeaderboardScene::tableSort(PlayerStats stats[NB_STATS]) {
     if (stats[i].score != 0) {
       snprintf(buffer, sizeof(buffer), "%-3s\t%07d\n", stats[i].name, stats[i].score);
       table += buffer;
-      //table += stats[i].name;
-      //table += "\t";
-      //table += std::to_string(stats[i].score);
-      //table += "\n";
     }
   }
 
@@ -92,7 +88,6 @@ bool LeaderboardScene::init() {
   // A utiliser pour remplir le tableau de scores avec des valeurs aléatoires
   //fillWithRandomStats(outStats);
   //writeToFile("leaderboard.bin", outStats);
-
 
   readFromFile("leaderboard.bin", outStats);
 

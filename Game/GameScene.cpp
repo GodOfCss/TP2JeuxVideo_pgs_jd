@@ -10,7 +10,7 @@ const unsigned int GameScene::BACKGROUND_SPEED = 10;
 const float GameScene::TIME_PER_FRAME = 1.0f / (float)Game::FRAME_RATE;
 const unsigned int GameScene::AMOUNT_OF_LIVES = 5;
 const unsigned int GameScene::NB_BULLETS = 15;
-const unsigned int GameScene::NB_ENEMIES = 1;
+const unsigned int GameScene::NB_ENEMIES = 10;
 const unsigned int GameScene::MAX_BONUSES = 5;
 const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
 const unsigned int GameScene::MAX_RECOIL = 10;
@@ -178,6 +178,7 @@ SceneType GameScene::update()
                 b.deactivate();
                 boss.damage();
                 if (boss.getHealth() <= 0) {
+                    score += boss.dies();
                     hasStarted = true;
                     g_ScoreUnion.score = score;
                     retval = SceneType::LEADERBOARD_SCENE;
