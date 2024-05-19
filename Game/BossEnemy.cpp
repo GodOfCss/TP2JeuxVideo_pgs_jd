@@ -147,3 +147,8 @@ int BossEnemy::getHealth()
 {
   return health;
 }
+
+float BossEnemy::getHealthPercentage()
+{
+    return (float)health / (float)HP * 100.0f;
+}

@@ -19,6 +19,7 @@ public:
 	void spawn();
 	int dies();
 	bool hasBeenSpawned();
+	float getHealthPercentage();
 	//void fireBullet();
 	//EnemyBullet& getAvailableBullet();
 
@@ -32,4 +33,6 @@ private:
 	//std::list<EnemyBullet> bullets;
 	int recoil;
 	int health;
+
+	
 };
