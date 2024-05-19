@@ -49,13 +49,6 @@ SceneType GameScene::update()
       retval = SceneType::NONE;
       return retval;
     }
-    
-    if (inputs.goToLeaderboardSwitch) {
-      hasStarted = true;
-      g_ScoreUnion.score = score;
-      retval = SceneType::LEADERBOARD_SCENE;
-      return retval;
-    }
 
     backgroundPosition -= BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
@@ -148,8 +141,14 @@ SceneType GameScene::update()
             if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
             {
                 enemyBullet.deactivate();
-                player.isHit();
-                lives--;
+                if (player.bonusCount > 0) {
+                  player.bonusCount--;
+                }
+                else
+                {
+                  player.isHit();
+                  lives--;
+                }
                 if (lives == 0) {
                     hasStarted = true;
                     g_ScoreUnion.score = score;

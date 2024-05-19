@@ -23,6 +23,5 @@ void Inputs::reset()
 	fireBullet = false;
 	startGameSwitch = false;
 	leaveGameSwitch = false;
-	goToLeaderboardSwitch = false;
 	returnToMainMenuSwitch = false;
 }
