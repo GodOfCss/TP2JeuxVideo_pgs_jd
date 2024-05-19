@@ -30,9 +30,20 @@ bool ContentManager::loadContent()
     return false;
   if (!gunBonusSoundBuffer.loadFromFile("Assets\\SoundFX\\Level01\\gunBonus.wav"))
     return false;
+
+
   if (!enemyKilledSoundBuffer.loadFromFile("Assets\\SoundFX\\Level01\\enemyKilled.wav"))
     return false;
   if (!titleScreenTexture.loadFromFile("Assets\\Sprites\\Title\\Title.png"))
+    return false;
+
+
+
+
+  if(!gunBonusTexture.loadFromFile("Assets\\Sprites\\Level01\\gunBonus.bmp"))
+    return false;
+
+  if(!healthBonusTexture.loadFromFile("Assets\\Sprites\\Level01\\healthBonus.bmp"))
     return false;
   
   return true;
@@ -46,6 +57,18 @@ const sf::Texture& ContentManager::getBackgroundTexture() const
 {
   return backgroundTexture;
 }
+
+
+const sf::Texture& ContentManager::getGunBonusTexture() const
+{
+  return gunBonusTexture;
+}
+
+const sf::Texture& ContentManager::getHealthBonusTexture() const
+{
+  return healthBonusTexture;
+}
+
 const sf::Texture& ContentManager::getMiscTexture() const
 {
   return miscTexture;
