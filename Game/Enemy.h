@@ -8,6 +8,7 @@ class Enemy :
 	static const float MAX_RECOIL;
 	static const int NB_BULLET;
 	static const int SCORE;
+	static const int HP;
 
 public:
 	Enemy();

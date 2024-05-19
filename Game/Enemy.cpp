@@ -8,14 +8,15 @@ const float Enemy::SPEED = 15.0f;
 const float Enemy::MAX_RECOIL = 1000.0f;
 const int Enemy::NB_BULLET = 50;
 const int Enemy::SCORE = 1000;
+const int Enemy::HP = 5;
 
 Enemy::Enemy() :
-    hasSpawned(false), recoil(MAX_RECOIL), health(3)
+    hasSpawned(false), recoil(MAX_RECOIL), health(HP)
 {
 
 }
 Enemy::Enemy(const Enemy& src)
-    : AnimatedGameObject(src), hasSpawned(false), recoil(MAX_RECOIL), health(3)
+    : AnimatedGameObject(src), hasSpawned(false), recoil(MAX_RECOIL), health(HP)
 {
     init(*contentManager);
 }

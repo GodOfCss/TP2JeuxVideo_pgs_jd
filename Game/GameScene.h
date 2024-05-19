@@ -8,6 +8,7 @@
 #include "GunBonus.h"
 #include "random.h"
 #include "HealthBonus.h"
+#include "BossEnemy.h"
 class GameScene :
     public Scene
 {
@@ -62,6 +63,10 @@ private:
 
     std::list<Enemy> enemies;
     int spawnCooldown;
+    int enemyTotal;
+
+    BossEnemy boss;
+    bool spawnBoss;
 
     std::list<GunBonus> gunBonuses;
     std::list<HealthBonus> healthBonuses;

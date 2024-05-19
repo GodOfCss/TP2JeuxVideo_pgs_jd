@@ -6,7 +6,7 @@
 #include "ShipAnimation.h"
 
 
-const float Player::PLAYER_SPEED = 300.0f;
+const float Player::PLAYER_SPEED = 600.0f;
 const float Player::BORDER_THICKNESS = 30;
 const float Player::MAX_INVINCIBLE = 3;
 

@@ -6,7 +6,7 @@
 const unsigned int GameScene::BACKGROUND_SPEED = 10;
 const unsigned int GameScene::AMOUNT_OF_LIVES = 5;
 const unsigned int GameScene::NB_BULLETS = 15;
-const unsigned int GameScene::NB_ENEMIES = 15;
+const unsigned int GameScene::NB_ENEMIES = 1;
 const unsigned int GameScene::MAX_BONUSES = 5;
 const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
 const unsigned int GameScene::MAX_RECOIL = 20;
@@ -22,6 +22,8 @@ GameScene::GameScene()
  , score(0)
  , recoil(0)
  , spawnCooldown(0)
+ , spawnBoss(false)
+ , enemyTotal(NB_ENEMIES)
 {
 
 }
@@ -47,7 +49,6 @@ SceneType GameScene::update()
       return retval;
     }
 
-    //backgroundPosition += BACKGROUND_SPEED;
     backgroundPosition -= BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
     scoreText.setString("Score: " + std::to_string(score));
@@ -89,6 +90,18 @@ SceneType GameScene::update()
                 e.spawn();
                 spawnCooldown = 200.0f;
             }
+
+            if (player.collidesWith(e))
+            {
+              lives--;
+              e.deactivate();
+              enemyTotal--;
+              if (lives == 0) {
+                hasStarted = true;
+                retval = SceneType::LEADERBOARD_SCENE;
+              }
+            } 
+
             e.update(1.0f / (float)Game::FRAME_RATE, inputs);
             
             //Bullets colliding with enemies + score
@@ -98,6 +111,7 @@ SceneType GameScene::update()
               e.damage();
               if (e.getHealth() == 0) {
                 score += e.dies();
+                enemyTotal--;
 
                 double bonusNumber = bonusRate.nextDouble();
 
@@ -106,6 +120,13 @@ SceneType GameScene::update()
                 }
               }
             }
+        }
+
+        if (enemyTotal == 0)
+        {
+            boss.spawn();
+            spawnBoss = false;
+            std::cout << "Boss spawned" << std::endl;
         }
     }
 
@@ -149,8 +170,6 @@ SceneType GameScene::update()
       }
     }
   
-
-
     //std::cout << 'X: ' << std::to_string(inputs.moveFactorX);
     //std::cout << 'Y: ' << std::to_string(inputs.moveFactorY);
     return getSceneType();
@@ -203,6 +222,7 @@ void GameScene::draw(sf::RenderWindow& window) const
         }
     }
 
+    window.draw(boss);
     window.draw(player);
 }
 
@@ -290,6 +310,9 @@ bool GameScene::init()
     //Player
     inputs.reset();
     player.init(contentManager);
+
+    //Boss
+    boss.init(contentManager);
 
     return true;
 }
