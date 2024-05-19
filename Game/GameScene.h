@@ -22,6 +22,9 @@ public:
     static const unsigned int MAX_RECOIL;
     static const double BONUS_PCT;
     static const double BONUS_50;
+    static const float GAMEPAD_SPEEDRATIO;
+    static const float TIME_PER_FRAME;
+    static const int CONTROLLER_DEAD_ZONE;
 
     // H�rit�es via Scene
     GameScene();
@@ -32,6 +35,7 @@ public:
     virtual bool init() override;
     virtual bool uninit() override;
     virtual bool handleEvents(sf::RenderWindow& window) override;
+    float handleControllerDeadZone(float analogInput);
 
     virtual void pause() override;
     virtual void unPause() override;

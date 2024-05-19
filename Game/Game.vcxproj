@@ -186,6 +186,7 @@
     <ClInclude Include="Publisher.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="scenetype.h" />
+    <ClInclude Include="ScoreUnion.h" />
     <ClInclude Include="ShipAnimation.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Subscriber.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="Publisher.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ScoreUnion.cpp" />
     <ClCompile Include="ShipAnimation.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

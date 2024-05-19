@@ -30,6 +30,7 @@
     <ClCompile Include="PlayerStats.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="BossEnemyAnimation.cpp" />
+    <ClCompile Include="ScoreUnion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorType.h" />
@@ -68,6 +69,7 @@
     <ClInclude Include="Bonus.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="BossEnemyAnimation.h" />
+    <ClInclude Include="ScoreUnion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Publisher.cpp">
