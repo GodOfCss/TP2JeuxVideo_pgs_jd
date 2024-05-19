@@ -7,11 +7,14 @@ const unsigned int GameScene::BACKGROUND_SPEED = 10;
 const unsigned int GameScene::AMOUNT_OF_LIVES = 5;
 const unsigned int GameScene::NB_BULLETS = 15;
 const unsigned int GameScene::NB_ENEMIES = 15;
+const unsigned int GameScene::MAX_BONUSES = 5;
 const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
 const unsigned int GameScene::MAX_RECOIL = 20;
+const double GameScene::BONUS_PCT = 0.10;
+const double GameScene::BONUS_50 = 0.50;
 
 GameScene::GameScene()
-    : Scene(SceneType::GAME_SCENE), background(sf::Sprite()), backgroundPosition(0), lives(AMOUNT_OF_LIVES), score(0)
+    : Scene(SceneType::GAME_SCENE), background(sf::Sprite()), backgroundPosition(0), lives(AMOUNT_OF_LIVES), score(0), recoil(0), spawnCooldown(0)
 {
 
 }
@@ -32,7 +35,7 @@ SceneType GameScene::update()
 
     if (inputs.fireBullet) 
     {
-        fireBullet();
+       fireBullet();
     }
     if (recoil > 0) 
     {
@@ -58,6 +61,7 @@ SceneType GameScene::update()
                 b.deactivate();
             }
         }
+
         for (Enemy& e : enemies)
         {
             if (isEnemyAvailable(e) && spawnCooldown == 0) {
@@ -65,21 +69,67 @@ SceneType GameScene::update()
                 spawnCooldown = 200.0f;
             }
             e.update(1.0f / (float)Game::FRAME_RATE, inputs);
-            /*if (b.collidesWith(e))
+            
+            //Bullets colliding with enemies + score
+            if (b.collidesWith(e))
             {
-                if (!b.isSpecial() && e.isAlive())
-                {
-                    b.deactivate();
-                }
+              b.deactivate();
+              e.damage();
+              if (e.getHealth() == 0) {
+                score += e.dies();
 
-                if (e.isAlive())
-                {
-                    dropBonus(e);
-                    score += e.dies();
+                double bonusNumber = bonusRate.nextDouble();
+
+                if (bonusNumber > BONUS_PCT) {
+                  spawnBonus(e.getPosition());
                 }
-            }*/
+              }
+            }
         }
     }
+
+    for (GunBonus& b : gunBonuses)
+    {
+      if (b.isActive())
+        b.move(0, 150.0f / (float)Game::FRAME_RATE);
+        if (b.getPosition().y > Game::GAME_HEIGHT)
+        {
+          b.deactivate();
+        }
+     
+        b.update(1.0f / (float)Game::FRAME_RATE, inputs);
+        if (b.collidesWith(player))
+        {
+         /* b.playSound();*/
+          b.deactivate();
+          score += 5000;
+         /* player.upgradeGun();*/
+        }
+    }
+
+    for (HealthBonus& b : healthBonuses)
+    {
+      if (b.isActive())
+        b.move(0, 150.0f / (float)Game::FRAME_RATE);
+      if (b.getPosition().y > Game::GAME_HEIGHT)
+      {
+        b.deactivate();
+      }
+
+      b.update(1.0f / (float)Game::FRAME_RATE, inputs);
+      if (b.collidesWith(player))
+      {
+        //b.playSound();
+        if (lives < AMOUNT_OF_LIVES) {
+          lives += 1;
+        }
+        b.deactivate();
+        score += 5000;
+      }
+    }
+  
+
+
     //std::cout << 'X: ' << std::to_string(inputs.moveFactorX);
     //std::cout << 'Y: ' << std::to_string(inputs.moveFactorY);
     return getSceneType();
@@ -115,6 +165,21 @@ void GameScene::draw(sf::RenderWindow& window) const
     for (const Enemy& e : enemies)
     {
         e.draw(window);
+    }
+
+    for (const GunBonus& b : gunBonuses)
+    {
+      if (b.isActive()) {
+          b.draw(window);
+      }
+    } 
+
+    for (const HealthBonus& b : healthBonuses)
+    {
+      if (b.isActive())
+      {
+            b.draw(window);
+        }
     }
 
     window.draw(player);
@@ -176,6 +241,21 @@ bool GameScene::init()
         enemies.push_back(newEnemy);
     }
 
+    //Liste de Bonus
+    for (int i = 0; i < MAX_BONUSES; i++)
+    {
+        GunBonus newBonus;
+        newBonus.init(contentManager, sf::Vector2f(0, 0));
+        gunBonuses.push_back(newBonus);
+    }
+
+    for (int i = 0; i < MAX_BONUSES; i++)
+    {
+      HealthBonus newBonus;
+      newBonus.init(contentManager, sf::Vector2f(0, 0));
+      healthBonuses.push_back(newBonus);
+    }
+
     //Player
     inputs.reset();
     player.init(contentManager);
@@ -230,6 +310,61 @@ Bullet& GameScene::getAvailableBullet()
     Bullet& b = bullets.back();
     b.activate();
     return b;
+}
+
+
+void GameScene::spawnBonus(sf::Vector2f enemyPosition)
+{
+  double fiftyPercentRate = bonusType.nextDouble();
+
+  if (fiftyPercentRate > BONUS_PCT) {
+    HealthBonus& healthBonus = getAvailableHealthBonus();
+    healthBonus.spawn(enemyPosition);
+  }
+  else
+  {
+    GunBonus& gunBonus = getAvailableGunBonus();
+    gunBonus.spawn(enemyPosition);
+  }
+
+}
+
+GunBonus& GameScene::getAvailableGunBonus()
+{
+  for (GunBonus& b : gunBonuses)
+  {
+    if (!b.isActive())
+    {
+      b.activate();
+      return b;
+    }
+  }
+
+  GunBonus newGunBonus;
+  newGunBonus.init(contentManager, sf::Vector2f(0, 0));
+  gunBonuses.push_back(newGunBonus);
+  GunBonus& b = gunBonuses.back();
+  b.activate();
+  return b;
+}
+
+HealthBonus& GameScene::getAvailableHealthBonus()
+{
+  for (HealthBonus& b : healthBonuses)
+  {
+    if (!b.isActive())
+    {
+      b.activate();
+      return b;
+    }
+  }
+
+  HealthBonus newHealthBonus;
+  newHealthBonus.init(contentManager, sf::Vector2f(0, 0));
+  healthBonuses.push_back(newHealthBonus);
+  HealthBonus& b = healthBonuses.back();
+  b.activate();
+  return b;
 }
 
 bool GameScene::isEnemyAvailable(Enemy& e)

@@ -7,14 +7,15 @@
 const float Enemy::SPEED = 15.0f;
 const float Enemy::MAX_RECOIL = 1000.0f;
 const int Enemy::NB_BULLET = 50;
+const int Enemy::SCORE = 1000;
 
 Enemy::Enemy() :
-    hasSpawned(false), recoil(MAX_RECOIL)
+    hasSpawned(false), recoil(MAX_RECOIL), health(3)
 {
 
 }
 Enemy::Enemy(const Enemy& src)
-    : AnimatedGameObject(src), hasSpawned(false)
+    : AnimatedGameObject(src), hasSpawned(false), recoil(MAX_RECOIL), health(3)
 {
     init(*contentManager);
 }
@@ -24,7 +25,7 @@ int Enemy::dies()
 {
     sound.setVolume(100);
     sound.play();
-    return 0;
+    return SCORE;
 }
 
 bool Enemy::init(const ContentManager& contentManager)
@@ -62,8 +63,10 @@ bool Enemy::update(const float DELTA_TIME, const Inputs& inputs)
     recoil -= DELTA_TIME;
     if (recoil <= 0)
     {
+      if (isActive()) {
         fireBullet();
         recoil = MAX_RECOIL;
+      }
     }
 
     move(0, SPEED * DELTA_TIME);
@@ -121,4 +124,19 @@ EnemyBullet& Enemy::getAvailableBullet()
         }
     }
     return bullets.front();
+}
+
+void Enemy::damage()
+{
+    health--;
+    if (health <= 0)
+    {
+        dies();
+        deactivate();
+    }
+}
+
+int Enemy::getHealth()
+{
+    return health;
 }

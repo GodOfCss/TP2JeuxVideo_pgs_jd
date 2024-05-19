@@ -18,6 +18,9 @@ bool EnemyBullet::update(const float elapsedTime)
 {
 	if (isActive())
 	{
+		if (getPosition().y > Game::GAME_HEIGHT) {
+			deactivate();
+		}
 		move(sf::Vector2f(0, BULLET_SPEED * elapsedTime));
 		if (getPosition().x > Game::GAME_WIDTH || getPosition().x < 0 || getPosition().y > Game::GAME_HEIGHT || getPosition().y < 0)
 			return true;

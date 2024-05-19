@@ -7,4 +7,5 @@ enum class State
   STANDARD_ENEMY,
   SHIP,
   BOSS,
+  BONUS,
 };

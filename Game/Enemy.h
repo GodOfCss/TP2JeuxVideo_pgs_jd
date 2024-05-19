@@ -7,6 +7,7 @@ class Enemy :
 	static const float SPEED;
 	static const float MAX_RECOIL;
 	static const int NB_BULLET;
+	static const int SCORE;
 
 public:
 	Enemy();
@@ -20,10 +21,14 @@ public:
 	void fireBullet();
 	EnemyBullet& getAvailableBullet();
 
+	void damage();
+	int getHealth();
+
 private:
 	sf::Sound sound;
 	bool hasSpawned;
 
 	std::list<EnemyBullet> bullets;
 	int recoil;
+	int health;
 };

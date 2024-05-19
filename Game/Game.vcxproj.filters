@@ -115,6 +115,18 @@
     <ClInclude Include="EnemyAnimation.h">
       <Filter>Animations</Filter>
     </ClInclude>
+    <ClInclude Include="random.h">
+      <Filter>GenericFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="GunBonusAnimation.h">
+      <Filter>Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="GunBonus.h">
+      <Filter>Bonus</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthBonus.h">
+      <Filter>Bonus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Publisher.cpp">
@@ -185,6 +197,18 @@
     </ClCompile>
     <ClCompile Include="EnemyAnimation.cpp">
       <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="random.cpp">
+      <Filter>GenericFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="GunBonusAnimation.cpp">
+      <Filter>Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="GunBonus.cpp">
+      <Filter>Bonus</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthBonus.cpp">
+      <Filter>Bonus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
