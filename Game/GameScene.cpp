@@ -9,7 +9,7 @@ const unsigned int GameScene::NB_BULLETS = 15;
 const unsigned int GameScene::NB_ENEMIES = 1;
 const unsigned int GameScene::MAX_BONUSES = 5;
 const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
-const unsigned int GameScene::MAX_RECOIL = 20;
+const unsigned int GameScene::MAX_RECOIL = 10;
 const double GameScene::BONUS_PCT = 0.10;
 const double GameScene::BONUS_50 = 0.50;
 
@@ -36,6 +36,7 @@ GameScene::~GameScene()
 
 SceneType GameScene::update()
 {
+    
     SceneType retval = getSceneType();
 
     if (hasStarted) {
@@ -54,6 +55,7 @@ SceneType GameScene::update()
     scoreText.setString("Score: " + std::to_string(score));
 
     player.update(1.0f / (float)Game::FRAME_RATE, inputs);
+    boss.update(1.0f / (float)Game::FRAME_RATE, inputs, player.getPosition().x);
 
     if (inputs.fireBullet) 
     {
@@ -93,14 +95,32 @@ SceneType GameScene::update()
 
             if (player.collidesWith(e))
             {
-              lives--;
-              e.deactivate();
-              enemyTotal--;
-              if (lives == 0) {
-                hasStarted = true;
-                retval = SceneType::LEADERBOARD_SCENE;
-              }
+                if (!player.isPlayerInvincible())
+                {
+                    player.isHit();
+                    lives--;
+                    e.deactivate();
+                    enemyTotal--;
+                    if (lives == 0) {
+                        hasStarted = true;
+                        retval = SceneType::LEADERBOARD_SCENE;
+                    }
+                }
             } 
+
+            for (EnemyBullet& enemyBullet : e.getBullets())
+            {
+                if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
+                {
+                    player.isHit();
+                    lives--;
+                    if (lives == 0) {
+                        hasStarted = true;
+                        retval = SceneType::LEADERBOARD_SCENE;
+                    }
+                    std::cout << lives;
+                }
+            }
 
             e.update(1.0f / (float)Game::FRAME_RATE, inputs);
             
@@ -122,10 +142,10 @@ SceneType GameScene::update()
             }
         }
 
-        if (enemyTotal == 0)
+        if (enemyTotal == 0 && spawnBoss == false)
         {
             boss.spawn();
-            spawnBoss = false;
+            spawnBoss = true;
             std::cout << "Boss spawned" << std::endl;
         }
     }
@@ -222,7 +242,7 @@ void GameScene::draw(sf::RenderWindow& window) const
         }
     }
 
-    window.draw(boss);
+    boss.draw(window);
     window.draw(player);
 }
 

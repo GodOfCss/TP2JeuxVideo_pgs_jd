@@ -9,7 +9,7 @@ public:
 	Bullet(const Bullet& src);
 	virtual bool update(const float elapsedTime, const ContentManager& contentManager);
 	virtual void initialize(const sf::Texture& texture, const sf::Vector2f& initialPosition, const sf::SoundBuffer& sb);
-	virtual void activate() override;
+	void activate() override;
 	void draw(sf::RenderWindow& window) const;
 
 protected:

@@ -6,7 +6,7 @@
 
 const float Enemy::SPEED = 15.0f;
 const float Enemy::MAX_RECOIL = 1000.0f;
-const int Enemy::NB_BULLET = 50;
+const int Enemy::NB_BULLET = 5;
 const int Enemy::SCORE = 1000;
 const int Enemy::HP = 5;
 
@@ -31,6 +31,7 @@ int Enemy::dies()
 
 bool Enemy::init(const ContentManager& contentManager)
 {
+
     sound.setBuffer(contentManager.getEnemyKilledSoundBuffer());
 
     //setTexture(contentManager.getEnemiesTexture());
@@ -110,7 +111,7 @@ bool Enemy::hasBeenSpawned()
 void Enemy::fireBullet()
 {
     EnemyBullet& bullet = getAvailableBullet();
-    bullet.activate();
+    bullet.fire();
     bullet.setPosition(getPosition());
 }
 
@@ -140,4 +141,8 @@ void Enemy::damage()
 int Enemy::getHealth()
 {
     return health;
+}
+
+std::list<EnemyBullet> Enemy::getBullets() {
+    return bullets;
 }

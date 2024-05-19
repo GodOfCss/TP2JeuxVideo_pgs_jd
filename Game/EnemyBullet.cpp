@@ -33,11 +33,14 @@ bool EnemyBullet::update(const float elapsedTime)
 
 void EnemyBullet::initialize(const sf::Texture& texture, const sf::Vector2f& initialPosition, const sf::SoundBuffer& sb)
 {
-	GameObject::initialize(texture, initialPosition);
+	Bullet::initialize(texture, initialPosition, sb);
 
 	setTextureRect(sf::IntRect(264, 106, 16, 5));
-	setRotation(90);
-	setScale(2, 2);
+	setRotation(270);
 	setColor(sf::Color(255, 150, 150, 255));
-	sound.setBuffer(sb);
+}
+
+void EnemyBullet::fire()
+{
+	activate();
 }

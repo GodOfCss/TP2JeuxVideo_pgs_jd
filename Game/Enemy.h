@@ -25,6 +25,8 @@ public:
 	void damage();
 	int getHealth();
 
+	std::list<EnemyBullet> getBullets();
+
 private:
 	sf::Sound sound;
 	bool hasSpawned;

@@ -2,7 +2,7 @@
 #include "BossEnemyAnimation.h"
 #include "ContentManager.h"
 
-const float BossEnemyAnimation::ANIMATION_LENGTH = 20.0f;
+const float BossEnemyAnimation::ANIMATION_LENGTH = 1.5f;
 
 BossEnemyAnimation::BossEnemyAnimation(sf::Sprite& s)
 	: CyclicAnimation(s, ANIMATION_LENGTH, true)
