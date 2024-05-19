@@ -177,6 +177,7 @@
     <ClInclude Include="InputBasedAnimation.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="LeaderboardScene.h" />
+    <ClInclude Include="MiniPlayer.h" />
     <ClInclude Include="PlayerStats.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="random.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Inputs.cpp" />
     <ClCompile Include="LeaderboardScene.cpp" />
     <ClCompile Include="LinearAnimation.cpp" />
+    <ClCompile Include="MiniPlayer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerStats.cpp" />
     <ClCompile Include="Publisher.cpp" />

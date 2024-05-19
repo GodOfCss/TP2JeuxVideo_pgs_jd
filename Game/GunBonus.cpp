@@ -34,6 +34,7 @@ void GunBonus::draw(sf::RenderWindow& window) const
 
 void GunBonus::playSound()
 {
+  sound.setVolume(100);
   sound.play();
 }
 

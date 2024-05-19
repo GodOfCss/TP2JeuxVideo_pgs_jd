@@ -22,6 +22,8 @@ bool Player::init(const ContentManager& contentManager)
 	activate();
 	setPosition(sf::Vector2f(100.0f, Game::GAME_HEIGHT * 0.5f));
 	setScale(2.5f, 2.5f);
+	const sf::IntRect& rect = getTextureRect();
+	setOrigin(sf::Vector2f(rect.width / 2.0f, rect.height / 2.0f));
 	bool retval = addAnimation<State::SHIP, ShipAnimation>(contentManager);
 	currentState = State::SHIP;
 
