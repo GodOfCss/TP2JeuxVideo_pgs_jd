@@ -152,8 +152,8 @@ SceneType GameScene::update()
         e.update(1.0f / (float)Game::FRAME_RATE, inputs);
    }
 
-    for (Bullet& b : bullets)
-    {
+  for (Bullet& b : bullets)
+  {
         sf::Vector2f bulletPos = b.getPosition();
 
         if (b.isActive())
@@ -232,54 +232,55 @@ SceneType GameScene::update()
             //}
         
 
-        if (enemyTotal == 0 && spawnBoss == false)
-        {
-            boss.spawn();
-            spawnBoss = true;
+          if (enemyTotal == 0 && spawnBoss == false)
+          {
+              boss.spawn();
+              spawnBoss = true;
+          }
         }
-    }
 
-    for (GunBonus& b : gunBonuses)
-    {
-      if (b.isActive())
-        b.move(0, 150.0f / (float)Game::FRAME_RATE);
+      for (GunBonus& b : gunBonuses)
+      {
+        if (b.isActive())
+          b.move(0, 150.0f / (float)Game::FRAME_RATE);
+          if (b.getPosition().y > Game::GAME_HEIGHT)
+          {
+            b.deactivate();
+          }
+     
+          b.update(1.0f / (float)Game::FRAME_RATE, inputs);
+          if (b.collidesWith(player))
+          {
+           /* b.playSound();*/
+            b.deactivate();
+            score += 5000;
+            player.bonusCount++;
+          }
+      }
+
+      for (HealthBonus& b : healthBonuses)
+      {
+        if (b.isActive())
+          b.move(0, 150.0f / (float)Game::FRAME_RATE);
         if (b.getPosition().y > Game::GAME_HEIGHT)
         {
           b.deactivate();
         }
-     
+
         b.update(1.0f / (float)Game::FRAME_RATE, inputs);
         if (b.collidesWith(player))
         {
-         /* b.playSound();*/
+          //b.playSound();
+          if (lives < AMOUNT_OF_LIVES) {
+            lives += 1;
+          }
           b.deactivate();
           score += 5000;
-          player.bonusCount++;
         }
-    }
-
-    for (HealthBonus& b : healthBonuses)
-    {
-      if (b.isActive())
-        b.move(0, 150.0f / (float)Game::FRAME_RATE);
-      if (b.getPosition().y > Game::GAME_HEIGHT)
-      {
-        b.deactivate();
       }
-
-      b.update(1.0f / (float)Game::FRAME_RATE, inputs);
-      if (b.collidesWith(player))
-      {
-        //b.playSound();
-        if (lives < AMOUNT_OF_LIVES) {
-          lives += 1;
-        }
-        b.deactivate();
-        score += 5000;
-      }
-    }
   
     return getSceneType();
+  }
 }
 
 
