@@ -5,23 +5,15 @@
 #include "BossEnemyAnimation.h"
 
 const float BossEnemy::SPEED = 300.0f;
-const float BossEnemy::MAX_RECOIL = 1000.0f;
-const int BossEnemy::NB_BULLET = 50;
+const int BossEnemy::NB_BULLET = 100;
 const int BossEnemy::SCORE = 10000;
 const int BossEnemy::HP = 20;
 
 BossEnemy::BossEnemy() :
-  hasSpawned(false), recoil(MAX_RECOIL), health(HP)
+  hasSpawned(false), health(HP)
 {
   init(*contentManager);
 }
-
-//BossEnemy::BossEnemy(const BossEnemy& src)
-//  : AnimatedGameObject(src), hasSpawned(false), recoil(MAX_RECOIL), health(HP)
-//{
-//  init(*contentManager);
-//}
-
 
 int BossEnemy::dies()
 {
@@ -32,40 +24,38 @@ int BossEnemy::dies()
 
 bool BossEnemy::init(const ContentManager& contentManager)
 {
-  //sound.setBuffer(contentManager.getEnemyKilledSoundBuffer());
-
   bool retval = addAnimation<State::BOSS, BossEnemyAnimation>(contentManager);
   currentState = State::BOSS;
 
   //liste de Bullets
-  //for (int i = 0; i < NB_BULLET; i++)
-  //{
-  //  EnemyBullet newBullet;
-  //  newBullet.initialize(contentManager.getMainCharacterTexture(), sf::Vector2f(0, 0), contentManager.getEnemyGunSoundBuffer());
-  //  bullets.push_back(newBullet);
-  //}
+  for (int i = 0; i < NB_BULLET; i++)
+  {
+    BossEnemyBullet newBullet;
+    newBullet.initialize(contentManager.getBulletBossTexture(), sf::Vector2f(0, 0), contentManager.getBossGunSoundBuffer());
+    bossBullets.push_back(newBullet);
+  }
 
   return retval && AnimatedGameObject::init(contentManager);
 }
 
 bool BossEnemy::update(const float DELTA_TIME, const Inputs& inputs, float playerPosition)
 {
-  //for (EnemyBullet& b : bullets)
-  //{
-  //  if (b.isActive())
-  //  {
-  //    b.update(DELTA_TIME);
-  //  }
-  //}
+  for (BossEnemyBullet& b : bossBullets)
+  {
+    if (b.isActive())
+    {
+      b.update(DELTA_TIME);
+    }
+  }
 
-  //recoil -= DELTA_TIME;
-  //if (recoil <= 0)
-  //{
-  //  if (isActive()) {
-  //    fireBullet();
-  //    recoil = MAX_RECOIL;
-  //  }
-  //}
+  const BossEnemyAnimation* animation = (BossEnemyAnimation*)animations[currentState];
+
+  if (animation->getPercentage() > 0.20f && animation->getPercentage() < 0.23f)
+  {
+    if (isActive()) {
+      fireBullet();
+    }
+  }
 
   if (getPosition().y < 100)
   {
@@ -89,13 +79,13 @@ void BossEnemy::draw(sf::RenderWindow& window) const
 {
   AnimatedGameObject::draw(window);
 
-  //for (const EnemyBullet& b : bullets)
-  //{
-  //  if (b.isActive())
-  //  {
-  //    b.draw(window);
-  //  }
-  //}
+  for (const BossEnemyBullet& b : bossBullets)
+  {
+    if (b.isActive())
+    {
+      b.draw(window);
+    }
+  }
 
 }
 
@@ -113,25 +103,25 @@ bool BossEnemy::hasBeenSpawned()
   return hasSpawned;
 }
 
-//void BossEnemy::fireBullet()
-//{
-//  EnemyBullet& bullet = getAvailableBullet();
-//  bullet.activate();
-//  bullet.setPosition(getPosition());
-//}
-//
-//EnemyBullet& BossEnemy::getAvailableBullet()
-//{
-//  for (EnemyBullet& b : bullets)
-//  {
-//    if (!b.isActive())
-//    {
-//      b.activate();
-//      return b;
-//    }
-//  }
-//  return bullets.front();
-//}
+void BossEnemy::fireBullet()
+{
+  BossEnemyBullet& bullet = getAvailableBullet();
+  bullet.activate();
+  bullet.setPosition(getPosition());
+}
+
+BossEnemyBullet& BossEnemy::getAvailableBullet()
+{
+  for (BossEnemyBullet& b : bossBullets)
+  {
+    if (!b.isActive())
+    {
+      b.activate();
+      return b;
+    }
+  }
+  return bossBullets.front();
+}
 
 void BossEnemy::damage()
 {
@@ -151,4 +141,8 @@ int BossEnemy::getHealth()
 float BossEnemy::getHealthPercentage()
 {
     return (float)health / (float)HP * 100.0f;
+}
+
+std::list<BossEnemyBullet> BossEnemy::getBullets() {
+  return bossBullets;
 }

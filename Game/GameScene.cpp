@@ -158,6 +158,28 @@ SceneType GameScene::update()
             }
         }
 
+        for (BossEnemyBullet& enemyBullet : boss.getBullets())
+        {
+          if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
+          {
+            enemyBullet.deactivate();
+            if (player.bonusCount > 0) {
+              player.bonusCount--;
+            }
+            else
+            {
+              player.isHit();
+              lives--;
+            }
+            if (lives == 0) {
+              hasStarted = true;
+              g_ScoreUnion.score = score;
+              retval = SceneType::TITLE_SCENE;
+              return retval;
+            }
+          }
+        }
+
         e.update(1.0f / (float)Game::FRAME_RATE, inputs);
      }
 

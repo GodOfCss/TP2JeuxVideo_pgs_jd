@@ -13,8 +13,13 @@ bool ContentManager::loadContent()
     return false;
   else
     backgroundTexture.setRepeated(true);
+
   if(!mainCharacterTexture.loadFromFile("Assets\\Sprites\\Level01\\NES - The Guardian Legend - The Guardian Alyssa.bmp"))
     return false;
+
+  if (!bulletBossTexture.loadFromFile("Assets\\Sprites\\Level01\\bossBullet.bmp"))
+    return false;
+
   if (!miscTexture.loadFromFile("Assets\\Sprites\\Level01\\NES - The Guardian Legend - Miscellaneous.bmp"))
     return false;
   if (!enemiesTexture.loadFromFile("Assets\\Sprites\\Level01\\NES - The Guardian Legend - Bosses.bmp"))
@@ -25,6 +30,8 @@ bool ContentManager::loadContent()
     return false;
   if (!enemyGunSoundBuffer.loadFromFile("Assets\\SoundFX\\Level01\\enemyGun.wav"))
     return false;
+  if (!bossGunSoundBuffer.loadFromFile("Assets\\SoundFX\\Level01\\bossGun.wav"))
+    return false;
 
   if (!healthBonusSoundBuffer.loadFromFile("Assets\\SoundFX\\Level01\\healthBonus.wav"))
     return false;
@@ -34,11 +41,9 @@ bool ContentManager::loadContent()
 
   if (!enemyKilledSoundBuffer.loadFromFile("Assets\\SoundFX\\Level01\\enemyKilled.wav"))
     return false;
+
   if (!titleScreenTexture.loadFromFile("Assets\\Sprites\\Title\\Title.png"))
     return false;
-
-
-
 
   if(!gunBonusTexture.loadFromFile("Assets\\Sprites\\Level01\\gunBonus.bmp"))
     return false;
@@ -54,6 +59,11 @@ bool ContentManager::loadContent()
 const sf::Texture& ContentManager::getEnemiesTexture() const
 {
   return enemiesTexture;
+}
+
+const sf::Texture& ContentManager::getBulletBossTexture() const
+{
+  return bulletBossTexture;
 }
 
 const sf::Texture& ContentManager::getBackgroundTexture() const
@@ -99,6 +109,11 @@ const sf::SoundBuffer& ContentManager::getPlayerGunSoundBuffer() const
 const sf::SoundBuffer& ContentManager::getEnemyGunSoundBuffer() const
 {
   return enemyGunSoundBuffer;
+}
+
+const sf::SoundBuffer& ContentManager::getBossGunSoundBuffer() const
+{
+  return bossGunSoundBuffer;
 }
 
 const sf::SoundBuffer& ContentManager::getHealthSoundBuffer() const

@@ -72,6 +72,7 @@ private:
     int enemyTotal;
 
     BossEnemy boss;
+    std::list<BossEnemyBullet> bossBullets;
     bool spawnBoss;
 
     std::list<GunBonus> gunBonuses;

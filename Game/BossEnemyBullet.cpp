@@ -1,20 +1,20 @@
 #include "stdafx.h"
 #include "game.h"
-#include "EnemyBullet.h"
+#include "BossEnemyBullet.h"
 
-const float EnemyBullet::BULLET_SPEED = 600.0f;
+const float BossEnemyBullet::BULLET_SPEED = 600.0f;
 
-EnemyBullet::EnemyBullet(const sf::Vector2f& initialPosition)
+BossEnemyBullet::BossEnemyBullet(const sf::Vector2f& initialPosition)
 	: Bullet(initialPosition)
 {
 }
 
-EnemyBullet::EnemyBullet(const EnemyBullet& src)
+BossEnemyBullet::BossEnemyBullet(const BossEnemyBullet& src)
 	: Bullet(src)
 {
 }
 
-bool EnemyBullet::update(const float elapsedTime)
+bool BossEnemyBullet::update(const float elapsedTime)
 {
 	if (isActive())
 	{
@@ -31,16 +31,16 @@ bool EnemyBullet::update(const float elapsedTime)
 
 }
 
-void EnemyBullet::initialize(const sf::Texture& texture, const sf::Vector2f& initialPosition, const sf::SoundBuffer& sb)
+void BossEnemyBullet::initialize(const sf::Texture& texture, const sf::Vector2f& initialPosition, const sf::SoundBuffer& sb)
 {
 	Bullet::initialize(texture, initialPosition, sb);
 
-	setTextureRect(sf::IntRect(264, 106, 16, 5));
+	//setTextureRect(sf::IntRect(264, 106, 16, 5));
 	setRotation(270);
 	setColor(sf::Color(255, 150, 150, 255));
 }
 
-void EnemyBullet::fire()
+void BossEnemyBullet::fire()
 {
 	activate();
 }

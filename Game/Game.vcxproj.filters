@@ -26,11 +26,11 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="random.cpp" />
     <ClCompile Include="ShipAnimation.cpp" />
-    <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="PlayerStats.cpp" />
     <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="BossEnemyAnimation.cpp" />
     <ClCompile Include="ScoreUnion.cpp" />
+    <ClCompile Include="BossEnemyBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActorType.h" />
@@ -66,10 +66,10 @@
     <ClInclude Include="Subscriber.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="Bonus.h" />
     <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="BossEnemyAnimation.h" />
     <ClInclude Include="ScoreUnion.h" />
+    <ClInclude Include="BossEnemyBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Publisher.cpp">
