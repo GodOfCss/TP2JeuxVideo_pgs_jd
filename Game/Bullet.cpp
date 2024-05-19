@@ -22,7 +22,9 @@ Bullet::Bullet(const Bullet& src)
 void Bullet::draw(sf::RenderWindow& window) const
 {
 	if (isActive())
-		window.draw(*this);
+	{
+ 		window.draw(*this);
+	}
 }
 
 
