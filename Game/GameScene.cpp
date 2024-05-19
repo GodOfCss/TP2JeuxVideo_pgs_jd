@@ -114,7 +114,7 @@ SceneType GameScene::update()
     {
         if (isEnemyAvailable(e) && spawnCooldown == 0) {
             e.spawn();
-            spawnCooldown = 10.0f;
+            spawnCooldown = 100.0f;
         }
 
         if (player.collidesWith(e))
@@ -123,6 +123,10 @@ SceneType GameScene::update()
             {
               if (player.bonusCount > 0) {
                 player.bonusCount--;
+                if (player.bonusCount == 0)
+                {
+                    miniPlayer.deactivate();
+                }
               }
               else
               {
