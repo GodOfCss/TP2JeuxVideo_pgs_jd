@@ -49,13 +49,6 @@ SceneType GameScene::update()
       retval = SceneType::NONE;
       return retval;
     }
-    
-    if (inputs.goToLeaderboardSwitch) {
-      hasStarted = true;
-      g_ScoreUnion.score = score;
-      retval = SceneType::LEADERBOARD_SCENE;
-      return retval;
-    }
 
     backgroundPosition -= BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
@@ -106,6 +99,7 @@ SceneType GameScene::update()
            fireMiniBullet();
        }
     }
+
     if (spawnCooldown > 0) 
     {
         spawnCooldown -= 1.0f / (float)Game::FRAME_RATE;
@@ -151,15 +145,20 @@ SceneType GameScene::update()
             if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible() && !miniPlayer.isActive())
             {
                 enemyBullet.deactivate();
-                player.isHit();
-                lives--;
+                if (player.bonusCount > 0) {
+                  player.bonusCount--;
+                }
+                else
+                {
+                  player.isHit();
+                  lives--;
+                }
                 if (lives == 0) {
                     hasStarted = true;
                     g_ScoreUnion.score = score;
                     retval = SceneType::TITLE_SCENE;
                     return retval;
                 }
-                std::cout << lives;
             }
             else if (miniPlayer.isActive() && enemyBullet.collidesWith(player) && !player.isPlayerInvincible()) {
                 enemyBullet.deactivate();
@@ -172,7 +171,7 @@ SceneType GameScene::update()
         }
 
         e.update(1.0f / (float)Game::FRAME_RATE, inputs);
-   }
+     }
 
     for (Bullet& b : bullets)
     {
@@ -190,6 +189,7 @@ SceneType GameScene::update()
                 b.deactivate();
                 boss.damage();
                 if (boss.getHealth() <= 0) {
+                    score += boss.dies();
                     hasStarted = true;
                     g_ScoreUnion.score = score;
                     retval = SceneType::LEADERBOARD_SCENE;
@@ -219,13 +219,7 @@ SceneType GameScene::update()
                 }
             }
         }
-
-        if (enemyTotal == 0 && spawnBoss == false)
-        {
-            boss.spawn();
-            spawnBoss = true;
-        }
-      }
+    }
 
       for (GunBonus& b : gunBonuses)
       {
@@ -282,7 +276,6 @@ SceneType GameScene::update()
   
     return getSceneType();
 }
-
 
 void GameScene::fireBullet()
 {
@@ -474,10 +467,6 @@ bool GameScene::handleEvents(sf::RenderWindow& window)
         {
             window.close();
             retval = true;
-        }
-        if (event.key.code == sf::Keyboard::BackSpace) //Pour test leaderboard, a modif
-        {
-          inputs.goToLeaderboardSwitch = true;
         }
     }
 
