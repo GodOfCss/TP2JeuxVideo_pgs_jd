@@ -46,6 +46,7 @@ private:
     ContentManager contentManager;
 
     sf::Sprite background;
+    sf::Sprite healthBar;
     sf::Music gameMusic;
     int backgroundPosition;
 

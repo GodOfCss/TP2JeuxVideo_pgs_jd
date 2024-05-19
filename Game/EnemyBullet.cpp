@@ -2,7 +2,7 @@
 #include "game.h"
 #include "EnemyBullet.h"
 
-const float EnemyBullet::BULLET_SPEED = 50;
+const float EnemyBullet::BULLET_SPEED = 600.0f;
 
 EnemyBullet::EnemyBullet(const sf::Vector2f& initialPosition)
 	: Bullet(initialPosition)

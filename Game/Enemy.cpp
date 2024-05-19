@@ -4,8 +4,8 @@
 #include "game.h"
 #include "EnemyAnimation.h"
 
-const float Enemy::SPEED = 15.0f;
-const float Enemy::MAX_RECOIL = 1000.0f;
+const float Enemy::SPEED = 150.0f;
+const float Enemy::MAX_RECOIL = 20.0f;
 const int Enemy::NB_BULLET = 5;
 const int Enemy::SCORE = 1000;
 const int Enemy::HP = 5;
@@ -62,8 +62,10 @@ bool Enemy::update(const float DELTA_TIME, const Inputs& inputs)
         }
     }
 
+    const EnemyAnimation* animation = (EnemyAnimation*) animations[currentState];
+
     recoil -= DELTA_TIME;
-    if (recoil <= 0)
+    if (animation->getPercentage() > 0.20f && animation->getPercentage() < 0.23f && recoil <= 0)
     {
       if (isActive()) {
         fireBullet();

@@ -13,6 +13,8 @@ public:
 	const sf::Texture& getGunBonusTexture() const;
 	const sf::Texture& getHealthBonusTexture() const;
 
+	const sf::Texture& getHealthBarTexture() const;
+
 	const sf::Texture& getTitleScreenTexture() const;
 	const sf::Font& getMainFont() const;
 	const sf::SoundBuffer& getPlayerGunSoundBuffer() const;
@@ -25,6 +27,7 @@ private:
 	sf::Texture backgroundTexture;
 	sf::Texture miscTexture;
 	sf::Texture enemiesTexture;
+	sf::Texture healthBarTexture;
 
 	sf::Texture gunBonusTexture;
 	sf::Texture healthBonusTexture;

@@ -129,4 +129,8 @@
     <CopyFileToFolders Include="..\extern\SFML\bin\sfml-window-2.dll" />
     <CopyFileToFolders Include="..\extern\SFML\bin\sfml-window-d-2.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Sprites\Level01\healthBar.png" />
+    <Image Include="Assets\Sprites\Level01\healthBar.jpg" />
+  </ItemGroup>
 </Project>

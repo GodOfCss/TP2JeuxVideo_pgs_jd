@@ -2,7 +2,7 @@
 #include "EnemyAnimation.h"
 #include "ContentManager.h"
 
-const float EnemyAnimation::ANIMATION_LENGTH = 20.0f;
+const float EnemyAnimation::ANIMATION_LENGTH = 1.3f;
 
 EnemyAnimation::EnemyAnimation(sf::Sprite& s)
 	: CyclicAnimation(s, ANIMATION_LENGTH, true)
