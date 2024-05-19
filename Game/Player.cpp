@@ -6,7 +6,7 @@
 #include "ShipAnimation.h"
 
 
-const float Player::PLAYER_SPEED = 300.0f;
+const float Player::PLAYER_SPEED = 600.0f;
 const float Player::BORDER_THICKNESS = 30;
 const float Player::MAX_INVINCIBLE = 3;
 
@@ -78,8 +78,21 @@ sf::Vector2f Player::normalizeMovement(const sf::Vector2f& playerMovement)
 
 void Player::isHit()
 {
-	if (!invincible <= 0)
+	if (invincible <= 0.0f)
 	{
 		invincible = MAX_INVINCIBLE;
 	}
+}
+
+bool Player::isPlayerInvincible() 
+{
+	if (invincible > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
 }

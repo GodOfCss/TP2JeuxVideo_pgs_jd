@@ -16,5 +16,7 @@ public:
     sf::Vector2f normalizeMovement(const sf::Vector2f& playerMovement);
     void isHit();
 
+    bool isPlayerInvincible();
+
     float invincible;
 };

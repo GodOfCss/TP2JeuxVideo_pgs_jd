@@ -1,15 +1,16 @@
 #include "stdafx.h"
 #include "GameScene.h"
 #include "game.h"
+#include "BossEnemy.h"
 #include <iostream>
 
 const unsigned int GameScene::BACKGROUND_SPEED = 10;
 const unsigned int GameScene::AMOUNT_OF_LIVES = 5;
 const unsigned int GameScene::NB_BULLETS = 15;
-const unsigned int GameScene::NB_ENEMIES = 15;
+const unsigned int GameScene::NB_ENEMIES = 1;
 const unsigned int GameScene::MAX_BONUSES = 5;
 const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
-const unsigned int GameScene::MAX_RECOIL = 20;
+const unsigned int GameScene::MAX_RECOIL = 10;
 const double GameScene::BONUS_PCT = 0.10;
 const double GameScene::BONUS_50 = 0.50;
 
@@ -22,6 +23,8 @@ GameScene::GameScene()
  , score(0)
  , recoil(0)
  , spawnCooldown(0)
+ , spawnBoss(false)
+ , enemyTotal(NB_ENEMIES)
 {
 
 }
@@ -34,6 +37,7 @@ GameScene::~GameScene()
 
 SceneType GameScene::update()
 {
+    
     SceneType retval = getSceneType();
 
     if (hasStarted) {
@@ -47,12 +51,46 @@ SceneType GameScene::update()
       return retval;
     }
 
-    //backgroundPosition += BACKGROUND_SPEED;
     backgroundPosition -= BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
     scoreText.setString("Score: " + std::to_string(score));
 
     player.update(1.0f / (float)Game::FRAME_RATE, inputs);
+
+    //BOSS
+    boss.update(1.0f / (float)Game::FRAME_RATE, inputs, player.getPosition().x);
+
+    if (enemyTotal == 0 && spawnBoss == false)
+    {
+        boss.spawn();
+        spawnBoss = true;
+    }
+
+    if (boss.isActive())
+    {
+        healthBar.setPosition(boss.getPosition().x - 30, boss.getPosition().y - 50);
+
+        float healthBossPercentage = boss.getHealthPercentage();
+        
+        if (healthBossPercentage > 85) {
+            healthBar.setTextureRect(sf::IntRect(13, 126, 82, 20));
+        }
+        else if (healthBossPercentage > 70) {
+            healthBar.setTextureRect(sf::IntRect(13, 102, 82, 20));
+        }
+        else if (healthBossPercentage > 55) {
+            healthBar.setTextureRect(sf::IntRect(13, 78, 82, 20));
+        }
+        else if (healthBossPercentage > 40) {
+            healthBar.setTextureRect(sf::IntRect(13, 54, 82, 20));
+        }
+        else if (healthBossPercentage > 25) {
+            healthBar.setTextureRect(sf::IntRect(13, 30, 82, 20));
+        }
+        else {
+            healthBar.setTextureRect(sf::IntRect(13, 6, 82, 20));
+        }
+    }
 
     if (inputs.fireBullet) 
     {
@@ -71,6 +109,47 @@ SceneType GameScene::update()
         spawnCooldown = 0;
     }
 
+
+    for (Enemy& e : enemies)
+    {
+        if (isEnemyAvailable(e) && spawnCooldown == 0) {
+            e.spawn();
+            spawnCooldown = 10.0f;
+        }
+
+        if (player.collidesWith(e))
+        {
+            if (!player.isPlayerInvincible())
+            {
+                player.isHit();
+                lives--;
+                e.deactivate();
+                enemyTotal--;
+                if (lives == 0) {
+                    hasStarted = true;
+                    retval = SceneType::LEADERBOARD_SCENE;
+                }
+            }
+        }
+
+        for (EnemyBullet& enemyBullet : e.getBullets())
+        {
+            if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
+            {
+                enemyBullet.deactivate();
+                player.isHit();
+                lives--;
+                if (lives == 0) {
+                    hasStarted = true;
+                    retval = SceneType::LEADERBOARD_SCENE;
+                }
+                std::cout << lives;
+            }
+        }
+
+        e.update(1.0f / (float)Game::FRAME_RATE, inputs);
+   }
+
     for (Bullet& b : bullets)
     {
         sf::Vector2f bulletPos = b.getPosition();
@@ -81,30 +160,33 @@ SceneType GameScene::update()
             {
                 b.deactivate();
             }
-        }
 
-        for (Enemy& e : enemies)
-        {
-            if (isEnemyAvailable(e) && spawnCooldown == 0) {
-                e.spawn();
-                spawnCooldown = 200.0f;
-            }
-            e.update(1.0f / (float)Game::FRAME_RATE, inputs);
-            
-            //Bullets colliding with enemies + score
-            if (b.collidesWith(e))
-            {
-              b.deactivate();
-              e.damage();
-              if (e.getHealth() == 0) {
-                score += e.dies();
-
-                double bonusNumber = bonusRate.nextDouble();
-
-                if (bonusNumber > BONUS_PCT) {
-                  spawnBonus(e.getPosition());
+            if (boss.isActive() && b.collidesWith(boss)) {
+                boss.damage();
+                if (boss.getHealth() <= 0) {
+                    hasStarted = true;
+                    retval = SceneType::LEADERBOARD_SCENE;
                 }
-              }
+            }
+
+            for (Enemy& e : enemies)
+            {
+                //Bullets colliding with enemies + score
+                if (b.collidesWith(e))
+                {
+                    b.deactivate();
+                    e.damage();
+                    if (e.getHealth() == 0) {
+                        score += e.dies();
+                        enemyTotal--;
+
+                        double bonusNumber = bonusRate.nextDouble();
+
+                        if (bonusNumber > BONUS_PCT) {
+                            spawnBonus(e.getPosition());
+                        }
+                    }
+                }
             }
         }
     }
@@ -149,8 +231,6 @@ SceneType GameScene::update()
       }
     }
   
-
-
     //std::cout << 'X: ' << std::to_string(inputs.moveFactorX);
     //std::cout << 'Y: ' << std::to_string(inputs.moveFactorY);
     return getSceneType();
@@ -172,7 +252,7 @@ void GameScene::draw(sf::RenderWindow& window) const
 
     for (int i = 0; i < lives; i++)
     {
-        window.draw(livesRender.at(lives - (i+1)));
+        window.draw(livesRender.at(lives - (i + 1)));
     }
 
     for (const Bullet& b : bullets)
@@ -190,19 +270,25 @@ void GameScene::draw(sf::RenderWindow& window) const
 
     for (const GunBonus& b : gunBonuses)
     {
-      if (b.isActive()) {
-          b.draw(window);
-      }
-    } 
-
-    for (const HealthBonus& b : healthBonuses)
-    {
-      if (b.isActive())
-      {
+        if (b.isActive()) {
             b.draw(window);
         }
     }
 
+    for (const HealthBonus& b : healthBonuses)
+    {
+        if (b.isActive())
+        {
+            b.draw(window);
+        }
+    }
+
+    boss.draw(window);
+    if (boss.isActive())
+    { 
+        window.draw(healthBar);
+    }
+   
     window.draw(player);
 }
 
@@ -231,6 +317,11 @@ bool GameScene::init()
 
     // Arrière-plan
     background.setTexture(contentManager.getBackgroundTexture());
+
+    //Boss Bar de vie
+    healthBar.setTexture(contentManager.getHealthBarTexture());
+    healthBar.setTextureRect(sf::IntRect(13, 126, 82, 20));
+    healthBar.setOrigin(sf::Vector2f(healthBar.getLocalBounds().height / 2, healthBar.getLocalBounds().width / 2));
 
     // Musique
     gameMusic.setLoop(true);
@@ -290,6 +381,9 @@ bool GameScene::init()
     //Player
     inputs.reset();
     player.init(contentManager);
+
+    //Boss
+    boss.init(contentManager);
 
     return true;
 }

@@ -4,18 +4,19 @@
 #include "game.h"
 #include "EnemyAnimation.h"
 
-const float Enemy::SPEED = 15.0f;
-const float Enemy::MAX_RECOIL = 1000.0f;
-const int Enemy::NB_BULLET = 50;
+const float Enemy::SPEED = 150.0f;
+const float Enemy::MAX_RECOIL = 20.0f;
+const int Enemy::NB_BULLET = 5;
 const int Enemy::SCORE = 1000;
+const int Enemy::HP = 5;
 
 Enemy::Enemy() :
-    hasSpawned(false), recoil(MAX_RECOIL), health(3)
+    hasSpawned(false), recoil(MAX_RECOIL), health(HP)
 {
 
 }
 Enemy::Enemy(const Enemy& src)
-    : AnimatedGameObject(src), hasSpawned(false), recoil(MAX_RECOIL), health(3)
+    : AnimatedGameObject(src), hasSpawned(false), recoil(MAX_RECOIL), health(HP)
 {
     init(*contentManager);
 }
@@ -30,6 +31,7 @@ int Enemy::dies()
 
 bool Enemy::init(const ContentManager& contentManager)
 {
+
     sound.setBuffer(contentManager.getEnemyKilledSoundBuffer());
 
     //setTexture(contentManager.getEnemiesTexture());
@@ -60,8 +62,10 @@ bool Enemy::update(const float DELTA_TIME, const Inputs& inputs)
         }
     }
 
+    const EnemyAnimation* animation = (EnemyAnimation*) animations[currentState];
+
     recoil -= DELTA_TIME;
-    if (recoil <= 0)
+    if (animation->getPercentage() > 0.20f && animation->getPercentage() < 0.23f && recoil <= 0)
     {
       if (isActive()) {
         fireBullet();
@@ -109,7 +113,7 @@ bool Enemy::hasBeenSpawned()
 void Enemy::fireBullet()
 {
     EnemyBullet& bullet = getAvailableBullet();
-    bullet.activate();
+    bullet.fire();
     bullet.setPosition(getPosition());
 }
 
@@ -139,4 +143,8 @@ void Enemy::damage()
 int Enemy::getHealth()
 {
     return health;
+}
+
+std::list<EnemyBullet> Enemy::getBullets() {
+    return bullets;
 }

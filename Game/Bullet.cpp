@@ -47,7 +47,6 @@ void Bullet::initialize(const sf::Texture& texture, const sf::Vector2f& initialP
 	setTextureRect(sf::IntRect(264,106,16,5));
 	setRotation(90);
 	setScale(2, 2);
-	setColor(sf::Color(150, 150, 255, 255));
 	sound.setBuffer(sb);
 }
 

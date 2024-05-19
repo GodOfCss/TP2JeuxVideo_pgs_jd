@@ -160,8 +160,9 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Bonus.h" />
+    <ClInclude Include="BossEnemy.h" />
+    <ClInclude Include="BossEnemyAnimation.h" />
     <ClInclude Include="GunBonus.h" />
-    <ClInclude Include="GunBonusAnimation.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="CyclicAnimation.h" />
@@ -177,7 +178,6 @@
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="LeaderboardScene.h" />
     <ClInclude Include="PlayerStats.h" />
-    <ClInclude Include="LeaderboardContentManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="random.h" />
     <ClInclude Include="SceneResult.h" />
@@ -197,8 +197,9 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AnimationFrame.cpp" />
     <ClCompile Include="Bonus.cpp" />
+    <ClCompile Include="BossEnemy.cpp" />
+    <ClCompile Include="BossEnemyAnimation.cpp" />
     <ClCompile Include="GunBonus.cpp" />
-    <ClCompile Include="GunBonusAnimation.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="CyclicAnimation.cpp" />
@@ -282,6 +283,10 @@
       <DestinationFolders Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)</DestinationFolders>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Sprites\Level01\healthBar.jpg" />
+    <Image Include="Assets\Sprites\Level01\healthBar.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

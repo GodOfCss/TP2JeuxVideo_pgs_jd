@@ -45,6 +45,9 @@ bool ContentManager::loadContent()
 
   if(!healthBonusTexture.loadFromFile("Assets\\Sprites\\Level01\\healthBonus.bmp"))
     return false;
+
+  if (!healthBarTexture.loadFromFile("Assets\\Sprites\\Level01\\healthBar.jpg"))
+      return false;
   
   return true;
 } 
@@ -67,6 +70,11 @@ const sf::Texture& ContentManager::getGunBonusTexture() const
 const sf::Texture& ContentManager::getHealthBonusTexture() const
 {
   return healthBonusTexture;
+}
+
+const sf::Texture& ContentManager::getHealthBarTexture() const
+{
+    return healthBarTexture;
 }
 
 const sf::Texture& ContentManager::getMiscTexture() const

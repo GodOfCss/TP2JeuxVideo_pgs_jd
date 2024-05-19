@@ -1,7 +1,7 @@
 #pragma once
 #include "AnimatedGameObject.h"
 #include "EnemyBullet.h"
-class Enemy :
+class BossEnemy :
 	public AnimatedGameObject
 {
 	static const float SPEED;
@@ -11,27 +11,28 @@ class Enemy :
 	static const int HP;
 
 public:
-	Enemy();
-	Enemy(const Enemy& src);
+	BossEnemy();
+	//BossEnemy(const BossEnemy& src);
 	virtual bool init(const ContentManager& contentManager) override;
-	bool update(const float DELTA_TIME, const Inputs& inputs) override;
+	bool update(const float DELTA_TIME, const Inputs& inputs, float playerPosition);
 	void draw(sf::RenderWindow& window) const;
 	void spawn();
 	int dies();
 	bool hasBeenSpawned();
-	void fireBullet();
-	EnemyBullet& getAvailableBullet();
+	float getHealthPercentage();
+	//void fireBullet();
+	//EnemyBullet& getAvailableBullet();
 
 	void damage();
 	int getHealth();
-
-	std::list<EnemyBullet> getBullets();
 
 private:
 	sf::Sound sound;
 	bool hasSpawned;
 
-	std::list<EnemyBullet> bullets;
+	//std::list<EnemyBullet> bullets;
 	int recoil;
 	int health;
+
+	
 };
