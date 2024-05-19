@@ -19,4 +19,6 @@ public:
     bool isPlayerInvincible();
 
     float invincible;
+
+    int bonusCount;
 };

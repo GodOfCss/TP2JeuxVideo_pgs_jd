@@ -3,8 +3,11 @@
 #include "game.h"
 #include "BossEnemy.h"
 #include <iostream>
+#include "ScoreUnion.h"
 
+const float GameScene::GAMEPAD_SPEEDRATIO = 0.5f;
 const unsigned int GameScene::BACKGROUND_SPEED = 10;
+const float GameScene::TIME_PER_FRAME = 1.0f / (float)Game::FRAME_RATE;
 const unsigned int GameScene::AMOUNT_OF_LIVES = 5;
 const unsigned int GameScene::NB_BULLETS = 15;
 const unsigned int GameScene::NB_ENEMIES = 1;
@@ -13,6 +16,7 @@ const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
 const unsigned int GameScene::MAX_RECOIL = 10;
 const double GameScene::BONUS_PCT = 0.10;
 const double GameScene::BONUS_50 = 0.50;
+const int GameScene::CONTROLLER_DEAD_ZONE = 20;
 
 GameScene::GameScene()
  : Scene(SceneType::GAME_SCENE)
@@ -26,7 +30,8 @@ GameScene::GameScene()
  , spawnBoss(false)
  , enemyTotal(NB_ENEMIES)
 {
-
+    g_ScoreUnion.score = score;
+    g_ScoreUnion.bonusCount = player.bonusCount;
 }
 
 GameScene::~GameScene()
@@ -47,6 +52,7 @@ SceneType GameScene::update()
     
     if (inputs.goToLeaderboardSwitch) {
       hasStarted = true;
+      g_ScoreUnion.score = score;
       retval = SceneType::LEADERBOARD_SCENE;
       return retval;
     }
@@ -54,11 +60,11 @@ SceneType GameScene::update()
     backgroundPosition -= BACKGROUND_SPEED;
     background.setTextureRect(sf::IntRect(0, backgroundPosition, background.getTextureRect().width, background.getTextureRect().height));
     scoreText.setString("Score: " + std::to_string(score));
+    bonusText.setString("Bonus: " + std::to_string(player.bonusCount));
 
-    player.update(1.0f / (float)Game::FRAME_RATE, inputs);
-
-    //BOSS
-    boss.update(1.0f / (float)Game::FRAME_RATE, inputs, player.getPosition().x);
+    player.update(TIME_PER_FRAME, inputs);
+    boss.update(TIME_PER_FRAME, inputs, player.getPosition().x);
+    recoil = std::max(0, recoil - 1);
 
     if (enemyTotal == 0 && spawnBoss == false)
     {
@@ -95,10 +101,6 @@ SceneType GameScene::update()
     if (inputs.fireBullet) 
     {
        fireBullet();
-    }
-    if (recoil > 0) 
-    {
-        recoil--;
     }
     if (spawnCooldown > 0) 
     {
@@ -188,6 +190,52 @@ SceneType GameScene::update()
                     }
                 }
             }
+
+
+            //for (EnemyBullet& enemyBullet : e.getBullets())
+            //{
+            //    if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
+            //    {
+            //        player.isHit();
+            //        if (player.bonusCount > 0)
+            //        {
+            //          player.bonusCount--;
+            //        }
+            //        else
+            //        {
+            //          lives--;
+            //          if (lives == 0) {
+            //            hasStarted = true;
+            //            retval = SceneType::LEADERBOARD_SCENE;
+            //          }
+            //        }
+            //    }
+            //}
+
+            //e.update(1.0f / (float)Game::FRAME_RATE, inputs);
+            //
+            ////Bullets colliding with enemies + score
+            //if (b.collidesWith(e))
+            //{
+            //  b.deactivate();
+            //  e.damage();
+            //  if (e.getHealth() == 0) {
+            //    score += e.dies();
+            //    enemyTotal--;
+
+            //    double bonusNumber = bonusRate.nextDouble();
+
+            //    if (bonusNumber > BONUS_PCT) {
+            //      spawnBonus(e.getPosition());
+            //    }
+            //  }
+            //}
+        
+
+        if (enemyTotal == 0 && spawnBoss == false)
+        {
+            boss.spawn();
+            spawnBoss = true;
         }
     }
 
@@ -206,7 +254,7 @@ SceneType GameScene::update()
          /* b.playSound();*/
           b.deactivate();
           score += 5000;
-         /* player.upgradeGun();*/
+          player.bonusCount++;
         }
     }
 
@@ -231,24 +279,26 @@ SceneType GameScene::update()
       }
     }
   
-    //std::cout << 'X: ' << std::to_string(inputs.moveFactorX);
-    //std::cout << 'Y: ' << std::to_string(inputs.moveFactorY);
     return getSceneType();
 }
 
 
 void GameScene::fireBullet()
 {
+  if (recoil == 0)
+  {
     Bullet& b = getAvailableBullet();
     b.setPosition(player.getPosition());
     inputs.fireBullet = false;
     recoil = MAX_RECOIL;
+  }
 }
 
 void GameScene::draw(sf::RenderWindow& window) const
 {
     window.draw(background);
     window.draw(scoreText);
+    window.draw(bonusText);
 
     for (int i = 0; i < lives; i++)
     {
@@ -304,6 +354,9 @@ void GameScene::unPause()
 
 bool GameScene::init()
 {
+    inputs.reset();
+    recoil = MAX_RECOIL;
+
     // Chargement des ressources
     if (contentManager.loadContent() == false)
     {
@@ -335,6 +388,14 @@ bool GameScene::init()
     scoreText.setOutlineColor(sf::Color::White);
     scoreText.setString("Score : 0");
     scoreText.setPosition(10, HUD_HEIGHT);
+
+    bonusText.setFont(contentManager.getMainFont());
+    bonusText.setCharacterSize(20);
+    bonusText.setFillColor(sf::Color::Cyan);
+    bonusText.setOutlineThickness(4);
+    bonusText.setOutlineColor(sf::Color::White);
+    bonusText.setString("Bonus : 0");
+    bonusText.setPosition(Game::GAME_WIDTH - 230, 30);
 
     //Lives
     for (int i = 0; i < AMOUNT_OF_LIVES; i++)
@@ -379,7 +440,6 @@ bool GameScene::init()
     }
 
     //Player
-    inputs.reset();
     player.init(contentManager);
 
     //Boss
@@ -412,14 +472,33 @@ bool GameScene::handleEvents(sf::RenderWindow& window)
         }
     }
 
-    inputs.moveFactorY = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) ? 100.0f : 0.0f;
-    inputs.moveFactorY += sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) ? -100.0f : 0.0f;
-    inputs.moveFactorX = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) ? 100.0f : 0.0f;
-    inputs.moveFactorX += sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) ? -100.0f : 0.0f;
-    inputs.fireBullet = sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (recoil == 0);
+    if (sf::Joystick::isConnected(0))
+    {
+      inputs.moveFactorY = handleControllerDeadZone(sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::Y)) / -GAMEPAD_SPEEDRATIO;
+      inputs.moveFactorX = handleControllerDeadZone(sf::Joystick::getAxisPosition(0, sf::Joystick::Axis::X)) / -GAMEPAD_SPEEDRATIO;
+
+      inputs.shouldFire = sf::Joystick::isButtonPressed(0, 0) && (recoil == 0);
+      inputs.fireBullet = sf::Joystick::isButtonPressed(0, 5);
+    }
+    //Sinon on se rabat sur le clavier
+    else {  
+      inputs.moveFactorY = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) ? 100.0f : 0.0f;
+      inputs.moveFactorY += sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down) ? -100.0f : 0.0f;
+      inputs.moveFactorX = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) ? 100.0f : 0.0f;
+      inputs.moveFactorX += sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) ? -100.0f : 0.0f;
+      inputs.fireBullet = sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && (recoil == 0);
+    }
 
     return retval;
+}
 
+float GameScene::handleControllerDeadZone(float analogInput)
+{
+  if (fabs(analogInput) < CONTROLLER_DEAD_ZONE)
+  {
+    analogInput = 0.0f;
+  }
+  return analogInput;
 }
 
 Bullet& GameScene::getAvailableBullet()

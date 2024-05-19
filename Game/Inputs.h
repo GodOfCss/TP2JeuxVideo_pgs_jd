@@ -18,5 +18,7 @@ struct Inputs
 	bool goToLeaderboardSwitch;
 	bool returnToMainMenuSwitch;
 
+	bool shouldFire;
+
 };
 

@@ -12,6 +12,7 @@ const float Player::MAX_INVINCIBLE = 3;
 
 Player::Player() :
 	invincible(0)
+	, bonusCount(0)
 {
 
 }
