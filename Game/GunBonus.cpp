@@ -10,6 +10,7 @@ GunBonus::GunBonus(const sf::Vector2f& initialPosition)
   setScale(3, 3);
 }
 
+
 GunBonus::GunBonus(const GunBonus& src)
   :GameObject(src)
 {
