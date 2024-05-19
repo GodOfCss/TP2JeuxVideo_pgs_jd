@@ -78,8 +78,21 @@ sf::Vector2f Player::normalizeMovement(const sf::Vector2f& playerMovement)
 
 void Player::isHit()
 {
-	if (!invincible <= 0)
+	if (invincible <= 0.0f)
 	{
 		invincible = MAX_INVINCIBLE;
 	}
+}
+
+bool Player::isPlayerInvincible() 
+{
+	if (invincible > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
 }

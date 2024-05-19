@@ -4,7 +4,7 @@
 #include "game.h"
 #include "BossEnemyAnimation.h"
 
-const float BossEnemy::SPEED = 500.0f;
+const float BossEnemy::SPEED = 300.0f;
 const float BossEnemy::MAX_RECOIL = 1000.0f;
 const int BossEnemy::NB_BULLET = 50;
 const int BossEnemy::SCORE = 10000;
@@ -73,7 +73,12 @@ bool BossEnemy::update(const float DELTA_TIME, const Inputs& inputs, float playe
   }
   else
   {
-    setPosition(playerPosition, 100);
+      if (getPosition().x < playerPosition) {
+          move(SPEED * DELTA_TIME, 0);
+      }
+      if (getPosition().x > playerPosition) {
+          move(-SPEED * DELTA_TIME, 0);
+      }
   }
 
 
