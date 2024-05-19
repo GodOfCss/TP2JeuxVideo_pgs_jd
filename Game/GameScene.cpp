@@ -10,7 +10,7 @@ const unsigned int GameScene::BACKGROUND_SPEED = 10;
 const float GameScene::TIME_PER_FRAME = 1.0f / (float)Game::FRAME_RATE;
 const unsigned int GameScene::AMOUNT_OF_LIVES = 5;
 const unsigned int GameScene::NB_BULLETS = 15;
-const unsigned int GameScene::NB_ENEMIES = 1;
+const unsigned int GameScene::NB_ENEMIES = 10;
 const unsigned int GameScene::MAX_BONUSES = 5;
 const unsigned int GameScene::HUD_HEIGHT = Game::GAME_HEIGHT / 13 * 12;
 const unsigned int GameScene::MAX_RECOIL = 10;
@@ -123,8 +123,14 @@ SceneType GameScene::update()
         {
             if (!player.isPlayerInvincible())
             {
+              if (player.bonusCount > 0) {
+                player.bonusCount--;
+              }
+              else
+              {
                 player.isHit();
                 lives--;
+              }
                 e.deactivate();
                 enemyTotal--;
                 if (lives == 0) {
