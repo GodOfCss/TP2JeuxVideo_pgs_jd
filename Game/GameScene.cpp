@@ -162,8 +162,8 @@ SceneType GameScene::update()
         e.update(1.0f / (float)Game::FRAME_RATE, inputs);
    }
 
-  for (Bullet& b : bullets)
-  {
+    for (Bullet& b : bullets)
+    {
         sf::Vector2f bulletPos = b.getPosition();
 
         if (b.isActive())
@@ -173,13 +173,15 @@ SceneType GameScene::update()
                 b.deactivate();
             }
 
-            if (boss.isActive() && b.collidesWith(boss)) {
+            if (boss.isActive() && b.collidesWith(boss))
+            {
+                b.deactivate();
                 boss.damage();
                 if (boss.getHealth() <= 0) {
-                  hasStarted = true;
-                  g_ScoreUnion.score = score;
-                  retval = SceneType::LEADERBOARD_SCENE;
-                  return retval;
+                    hasStarted = true;
+                    g_ScoreUnion.score = score;
+                    retval = SceneType::LEADERBOARD_SCENE;
+                    return retval;
                 }
             }
 
@@ -190,66 +192,28 @@ SceneType GameScene::update()
                 {
                     b.deactivate();
                     e.damage();
-                    if (e.getHealth() == 0) {
+                    if (e.getHealth() == 0)
+                    {
                         score += e.dies();
                         enemyTotal--;
 
                         double bonusNumber = bonusRate.nextDouble();
 
-                        if (bonusNumber > BONUS_PCT) {
+                        if (bonusNumber > BONUS_PCT)
+                        {
                             spawnBonus(e.getPosition());
                         }
                     }
                 }
             }
-
-
-            //for (EnemyBullet& enemyBullet : e.getBullets())
-            //{
-            //    if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
-            //    {
-            //        player.isHit();
-            //        if (player.bonusCount > 0)
-            //        {
-            //          player.bonusCount--;
-            //        }
-            //        else
-            //        {
-            //          lives--;
-            //          if (lives == 0) {
-            //            hasStarted = true;
-            //            retval = SceneType::LEADERBOARD_SCENE;
-            //          }
-            //        }
-            //    }
-            //}
-
-            //e.update(1.0f / (float)Game::FRAME_RATE, inputs);
-            //
-            ////Bullets colliding with enemies + score
-            //if (b.collidesWith(e))
-            //{
-            //  b.deactivate();
-            //  e.damage();
-            //  if (e.getHealth() == 0) {
-            //    score += e.dies();
-            //    enemyTotal--;
-
-            //    double bonusNumber = bonusRate.nextDouble();
-
-            //    if (bonusNumber > BONUS_PCT) {
-            //      spawnBonus(e.getPosition());
-            //    }
-            //  }
-            //}
-        
-
-          if (enemyTotal == 0 && spawnBoss == false)
-          {
-              boss.spawn();
-              spawnBoss = true;
-          }
         }
+
+        if (enemyTotal == 0 && spawnBoss == false)
+        {
+            boss.spawn();
+            spawnBoss = true;
+        }
+      }
 
       for (GunBonus& b : gunBonuses)
       {
@@ -304,19 +268,15 @@ SceneType GameScene::update()
       }
   
     return getSceneType();
-  }
 }
 
 
 void GameScene::fireBullet()
 {
-  if (recoil == 0)
-  {
     Bullet& b = getAvailableBullet();
     b.setPosition(player.getPosition());
     inputs.fireBullet = false;
     recoil = MAX_RECOIL;
-  }
 }
 
 void GameScene::draw(sf::RenderWindow& window) const
@@ -539,7 +499,7 @@ Bullet& GameScene::getAvailableBullet()
     // Tous les projectiles sont déjà utilisés: on en crée ... au moins au autre pour nos besoins.
     // On pourrait ajouter plus d'un Bullet ici
     Bullet newBullet;
-    newBullet.initialize(contentManager.getMiscTexture(), sf::Vector2f(0, 0), contentManager.getPlayerGunSoundBuffer());
+    newBullet.initialize(contentManager.getMainCharacterTexture(), sf::Vector2f(0, 0), contentManager.getPlayerGunSoundBuffer());
     bullets.push_back(newBullet);
     Bullet& b = bullets.back();
     b.activate();
