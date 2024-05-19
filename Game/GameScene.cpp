@@ -207,14 +207,7 @@ SceneType GameScene::update()
                 }
             }
         }
-  }
-
-        if (enemyTotal == 0 && spawnBoss == false)
-        {
-            boss.spawn();
-            spawnBoss = true;
-        }
-      }
+    }
 
       for (GunBonus& b : gunBonuses)
       {
