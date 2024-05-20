@@ -9,6 +9,7 @@
 #include "random.h"
 #include "HealthBonus.h"
 #include "BossEnemy.h"
+#include "MiniPlayer.h"
 class GameScene :
     public Scene
 {
@@ -31,6 +32,7 @@ public:
     ~GameScene();
     virtual SceneType update() override;
     void fireBullet();
+    void fireMiniBullet();
     virtual void draw(sf::RenderWindow& window) const override;
     virtual bool init() override;
     virtual bool uninit() override;
@@ -63,6 +65,7 @@ private:
 
     Player player;
     Inputs inputs;
+    MiniPlayer miniPlayer;
 
     std::list<Bullet> bullets;
     int recoil;

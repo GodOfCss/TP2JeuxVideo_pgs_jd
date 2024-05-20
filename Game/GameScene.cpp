@@ -56,6 +56,7 @@ SceneType GameScene::update()
     bonusText.setString("Bonus: " + std::to_string(player.bonusCount));
 
     player.update(TIME_PER_FRAME, inputs);
+    miniPlayer.update(TIME_PER_FRAME, player.getPosition());
     boss.update(TIME_PER_FRAME, inputs, player.getPosition().x);
     recoil = std::max(0, recoil - 1);
 
@@ -94,6 +95,9 @@ SceneType GameScene::update()
     if (inputs.fireBullet) 
     {
        fireBullet();
+       if (miniPlayer.isActive()) {
+           fireMiniBullet();
+       }
     }
 
     if (spawnCooldown > 0) 
@@ -110,7 +114,7 @@ SceneType GameScene::update()
     {
         if (isEnemyAvailable(e) && spawnCooldown == 0) {
             e.spawn();
-            spawnCooldown = 10.0f;
+            spawnCooldown = 100.0f;
         }
 
         if (player.collidesWith(e))
@@ -119,6 +123,10 @@ SceneType GameScene::update()
             {
               if (player.bonusCount > 0) {
                 player.bonusCount--;
+                if (player.bonusCount == 0)
+                {
+                    miniPlayer.deactivate();
+                }
               }
               else
               {
@@ -138,7 +146,7 @@ SceneType GameScene::update()
 
         for (EnemyBullet& enemyBullet : e.getBullets())
         {
-            if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible())
+            if (enemyBullet.collidesWith(player) && !player.isPlayerInvincible() && !miniPlayer.isActive())
             {
                 enemyBullet.deactivate();
                 if (player.bonusCount > 0) {
@@ -154,6 +162,14 @@ SceneType GameScene::update()
                     g_ScoreUnion.score = score;
                     retval = SceneType::TITLE_SCENE;
                     return retval;
+                }
+            }
+            else if (miniPlayer.isActive() && enemyBullet.collidesWith(player) && !player.isPlayerInvincible()) {
+                enemyBullet.deactivate();
+                player.isHit();
+                player.bonusCount--;
+                if (player.bonusCount == 0) {
+                    miniPlayer.deactivate();
                 }
             }
         }
@@ -221,10 +237,11 @@ SceneType GameScene::update()
           b.update(1.0f / (float)Game::FRAME_RATE, inputs);
           if (b.collidesWith(player))
           {
-           /* b.playSound();*/
+            b.playSound();
             b.deactivate();
             score += 5000;
             player.bonusCount++;
+            miniPlayer.activate();
           }
       }
 
@@ -240,7 +257,7 @@ SceneType GameScene::update()
         b.update(1.0f / (float)Game::FRAME_RATE, inputs);
         if (b.collidesWith(player))
         {
-          //b.playSound();
+          b.playSound();
           if (lives < AMOUNT_OF_LIVES) {
             lives += 1;
           }
@@ -270,6 +287,12 @@ void GameScene::fireBullet()
     b.setPosition(player.getPosition());
     inputs.fireBullet = false;
     recoil = MAX_RECOIL;
+}
+
+void GameScene::fireMiniBullet()
+{
+    Bullet& b = getAvailableBullet();
+    b.setPosition(miniPlayer.getPosition().x - 283, miniPlayer.getPosition().y - 28);
 }
 
 void GameScene::draw(sf::RenderWindow& window) const
@@ -318,6 +341,10 @@ void GameScene::draw(sf::RenderWindow& window) const
     }
    
     window.draw(player);
+    if (miniPlayer.isActive())
+    {
+        window.draw(miniPlayer);
+    }
 }
 
 void GameScene::pause()
@@ -419,6 +446,7 @@ bool GameScene::init()
 
     //Player
     player.init(contentManager);
+    miniPlayer.init(contentManager);
 
     //Boss
     boss.init(contentManager);
@@ -500,7 +528,7 @@ void GameScene::spawnBonus(sf::Vector2f enemyPosition)
 {
   double fiftyPercentRate = bonusType.nextDouble();
 
-  if (fiftyPercentRate > BONUS_PCT) {
+  if (fiftyPercentRate > BONUS_50) {
     HealthBonus& healthBonus = getAvailableHealthBonus();
     healthBonus.spawn(enemyPosition);
   }

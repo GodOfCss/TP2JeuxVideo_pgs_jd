@@ -33,6 +33,7 @@ void HealthBonus::draw(sf::RenderWindow& window) const
 
 void HealthBonus::playSound()
 {
+  sound.setVolume(100);
   sound.play();
 }
 
