@@ -25,11 +25,7 @@ bool MiniPlayer::update(float deltaT, const sf::Vector2f playerPosition)
 {
 	int xDirection = 1;
 	int yDirection = 1;
-	
-	std::cout << getPosition().x;
-	std::cout << "\n PLAYER: ";
-	std::cout << playerPosition.x;
-	std::cout << "\n MINI: ";
+
 
 	if (playerPosition.y + 150 < getPosition().y)
 	{
