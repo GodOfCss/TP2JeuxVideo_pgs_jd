@@ -86,8 +86,10 @@ bool LeaderboardScene::init() {
   leaderboardText.setPosition(Game::GAME_WIDTH / 2 - leaderboardText.getLocalBounds().width / 2, Game::GAME_HEIGHT / 2 - 400);
 
   // A utiliser pour remplir le tableau de scores avec des valeurs aléatoires
-  //fillWithRandomStats(outStats);
-  //writeToFile("leaderboard.bin", outStats);
+  if (!readFromFile("leaderboard.bin", inStats)) {
+    fillWithRandomStats(outStats);
+    writeToFile("leaderboard.bin", outStats);
+  }
 
   readFromFile("leaderboard.bin", outStats);
 
@@ -179,17 +181,17 @@ bool LeaderboardScene::handleEvents(sf::RenderWindow& window) {
 
 
 //A utiliser pour remplir le tableau de scores avec des valeurs aléatoires
-//void LeaderboardScene::fillWithRandomStats(PlayerStats stats[NB_STATS])
-//{
-//  srand((unsigned)time(nullptr));
-//  std::string randomNames[] = { "Bob", "Joe", "Ike", "Sam", "Zea", "Kin", "Mis", "Col", "Mat", "Tom" };
-//
-//  for (int i = 0; i < NB_STATS; i++)
-//  {
-//     sprintf_s(stats[i].name, "%s", randomNames[rand()%(sizeof(randomNames)/sizeof(randomNames[0]))].c_str());
-//     stats[i].score = 1000;
-//  }
-//}
+void LeaderboardScene::fillWithRandomStats(PlayerStats stats[NB_STATS])
+{
+  srand((unsigned)time(nullptr));
+  std::string randomNames[] = { "Bob", "Joe", "Ike", "Sam", "Zea", "Kin", "Mis", "Col", "Mat", "Tom" };
+
+  for (int i = 0; i < NB_STATS; i++)
+  {
+     sprintf_s(stats[i].name, "%s", randomNames[rand()%(sizeof(randomNames)/sizeof(randomNames[0]))].c_str());
+     stats[i].score = 1000;
+  }
+}
 
 bool LeaderboardScene::writeToFile(const std::string& path, const PlayerStats stats[NB_STATS])
 {
